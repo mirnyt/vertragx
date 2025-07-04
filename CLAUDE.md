@@ -328,6 +328,330 @@ The project uses Supabase (PostgreSQL) with the following core tables:
 4. Handle errors gracefully
 5. Test agent responses thoroughly
 
+## Adding New Packages to the Monorepo
+
+This section provides comprehensive instructions for introducing new packages to the monorepo. Follow these steps when adding any npm package or GitHub repository.
+
+### Step 1: Determine Package Type
+
+**CRITICAL:** First determine if this should be:
+- **Shared Package** (in `packages/`): For code used across multiple apps
+- **App Dependency**: For packages used by a single app only
+
+**Decision Criteria:**
+- If the package provides shared functionality (utilities, components, integrations) → Create as shared package
+- If the package is only used by one app (e.g., a specific UI library for web only) → Add as app dependency
+
+### Step 2A: Adding as App Dependency (Single App Use)
+
+If the package is only for one app:
+
+```bash
+# Navigate to the specific app
+cd apps/[app-name]  # e.g., apps/app, apps/web, apps/api
+
+# Add the dependency using bun
+bun add [package-name]  # for production dependencies
+bun add -D [package-name]  # for dev dependencies
+```
+
+### Step 2B: Creating a Shared Package (Multi-App Use)
+
+For shared packages, create a new package in the `packages/` directory:
+
+#### 2B.1: Create Package Structure
+
+```bash
+# Create the package directory
+mkdir -p packages/[package-name]/src
+
+# Navigate to the package
+cd packages/[package-name]
+```
+
+#### 2B.2: Create package.json
+
+Create `packages/[package-name]/package.json`:
+
+```json
+{
+  "name": "@v1/[package-name]",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "clean": "rm -rf .turbo node_modules",
+    "lint": "biome check .",
+    "format": "biome format --write .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    // Add the npm package here
+    "[npm-package-name]": "^x.x.x"
+  },
+  "devDependencies": {
+    "@v1/typescript-config": "workspace:*",
+    "typescript": "catalog:default"
+  },
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    // Add additional exports as needed
+    "./client": "./src/client.ts",
+    "./server": "./src/server.ts"
+  }
+}
+```
+
+**IMPORTANT Naming Conventions:**
+- Package name in filesystem: `lowercase-with-dashes`
+- Package name in package.json: `@v1/lowercase-with-dashes`
+- TypeScript imports: `@v1/lowercase-with-dashes`
+
+#### 2B.3: Create TypeScript Configuration
+
+Create `packages/[package-name]/tsconfig.json`:
+
+```json
+{
+  "extends": "@v1/typescript-config/base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}
+```
+
+#### 2B.4: Create Index File
+
+Create `packages/[package-name]/src/index.ts`:
+
+```typescript
+// Server-only package (add this if the package should only run server-side)
+import "server-only";
+
+// Export the main functionality
+export * from "./[main-module]";
+
+// Re-export from the npm package if needed
+export { SomeClass, someFunction } from "[npm-package-name]";
+```
+
+### Step 3: Determine Client/Server Usage
+
+**CRITICAL Decision:** Determine where this package will run:
+
+1. **Server-only** (most integrations, API clients, database):
+   - Add `import "server-only";` at the top of index.ts
+   - Use in Server Components and Server Actions only
+
+2. **Client-only** (UI libraries, browser APIs):
+   - Add `"use client";` directive where needed
+   - Can be used in Client Components
+
+3. **Universal** (utilities, shared types):
+   - No special directives needed
+   - Create separate exports for client/server if needed
+
+### Step 4: Add to Workspace Dependencies
+
+Add the shared package to apps that need it:
+
+```bash
+# Navigate to the app
+cd apps/[app-name]
+
+# Add the workspace dependency
+bun add @v1/[package-name]@workspace:*
+```
+
+### Step 5: Handle Package-Specific Configuration
+
+#### 5.1: Environment Variables
+
+If the package needs environment variables:
+
+1. Add to `.env.example` in relevant apps:
+```bash
+# For client-side variables (accessible in browser)
+NEXT_PUBLIC_[PACKAGE_NAME]_API_KEY=your_api_key_here
+
+# For server-side variables (secure)
+[PACKAGE_NAME]_SECRET_KEY=your_secret_key_here
+```
+
+2. Update CLAUDE.md environment section
+3. Add TypeScript types in the package:
+
+```typescript
+// packages/[package-name]/src/env.ts
+export const env = {
+  apiKey: process.env.NEXT_PUBLIC_[PACKAGE_NAME]_API_KEY!,
+  secretKey: process.env.[PACKAGE_NAME]_SECRET_KEY!,
+};
+```
+
+#### 5.2: Package Initialization
+
+Create initialization patterns based on package type:
+
+**For API Clients:**
+```typescript
+// packages/[package-name]/src/client.ts
+import { SomeSDK } from "[npm-package-name]";
+
+let client: SomeSDK | null = null;
+
+export function getClient() {
+  if (!client) {
+    client = new SomeSDK({
+      apiKey: process.env.[PACKAGE_NAME]_API_KEY!,
+    });
+  }
+  return client;
+}
+```
+
+**For React Components/Hooks:**
+```typescript
+// packages/[package-name]/src/provider.tsx
+"use client";
+
+import { SomeProvider } from "[npm-package-name]";
+
+export function PackageProvider({ children }: { children: React.ReactNode }) {
+  return (
+    <SomeProvider config={...}>
+      {children}
+    </SomeProvider>
+  );
+}
+```
+
+### Step 6: Integration Patterns
+
+Based on package type, implement appropriate patterns:
+
+#### 6.1: Service Integration (API, Database, etc.)
+
+1. Create query/mutation files:
+```typescript
+// packages/[package-name]/src/queries.ts
+import { getClient } from "./client";
+
+export async function getData(id: string) {
+  const client = getClient();
+  return client.fetch(id);
+}
+```
+
+2. Create Server Actions if needed:
+```typescript
+// apps/app/src/actions/[package-name]/action.ts
+import { authActionClient } from "@/actions/safe-action";
+import { getData } from "@v1/[package-name]";
+
+export const fetchDataAction = authActionClient
+  .schema(z.object({ id: z.string() }))
+  .action(async ({ parsedInput, ctx }) => {
+    return getData(parsedInput.id);
+  });
+```
+
+#### 6.2: UI Component Library
+
+1. Re-export components:
+```typescript
+// packages/[package-name]/src/components.ts
+"use client";
+
+export { Button, Card, Modal } from "[npm-package-name]";
+export * from "[npm-package-name]/styles.css";
+```
+
+2. Add to app layout if needed:
+```tsx
+// apps/app/src/app/layout.tsx
+import { PackageProvider } from "@v1/[package-name]/provider";
+
+export default function Layout({ children }) {
+  return (
+    <PackageProvider>
+      {children}
+    </PackageProvider>
+  );
+}
+```
+
+### Step 7: Testing and Validation
+
+After adding the package:
+
+```bash
+# Install dependencies
+bun install
+
+# Run TypeScript check
+bun typecheck
+
+# Run linting
+bun lint
+
+# Test in development
+bun dev
+```
+
+### Step 8: Update Documentation
+
+1. Add package to the Architecture section in CLAUDE.md
+2. Document any required environment variables
+3. Add usage examples if complex
+4. Update the "Packages" list in CLAUDE.md
+
+### Common Package Examples
+
+**Analytics Package Pattern:**
+- Server and client exports
+- Provider for client-side
+- Environment variables for API keys
+
+**AI/LLM Package Pattern:**
+- Server-only with "server-only" import
+- Client initialization
+- Zod schemas for validation
+
+**UI Component Package Pattern:**
+- Client-side with "use client"
+- Re-export components
+- Include styles/themes
+
+**Utility Package Pattern:**
+- Pure functions
+- No environment dependencies
+- Universal usage
+
+### Troubleshooting
+
+**Import errors:**
+- Ensure package.json exports are correct
+- Check TypeScript paths in tsconfig
+- Verify workspace dependency is added
+
+**Runtime errors:**
+- Check if package needs client/server directive
+- Verify environment variables are set
+- Ensure initialization is done before usage
+
+**Build errors:**
+- Run `bun clean` and `bun install`
+- Check for circular dependencies
+- Verify package.json main/types paths
+
 ## Authentication Implementation
 
 The project uses **Supabase Auth** with SSR (Server-Side Rendering) for secure authentication.
