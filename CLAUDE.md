@@ -2,21 +2,39 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Project Overview
+
+# VertragX
+
+About VertragX platform -> provides digital sourcing enablement technology, streamlining supplier and partner sourcing processes for industrial organizations seeking to modernize their procurement workflows. VertragX, an AI-powered industrial engineering marketplace built on the promise of "Match. Quote. Win." The design must embody precision and clarity, reflecting how VertragX connects the right engineering requirements with the right manufacturing expertise, every time. Use generous whitespace, MINIMAL subtle gradients, and refined typography to create a premium, professional aesthetic. The page must clearly illustrate where VertragX optimizes the critical sourcing phase of the Source-to-Pay (S2P) process, demonstrating tangible value for both industrial buyers seeking capable suppliers and suppliers seeking winnable opportunities. Every design element should reinforce the platform's core value: intelligent matching that eliminates wasted time and mismatched RFQs.
+
+VertragX is an AI-powered industrial sourcing platform that helps match buyers with qualified suppliers.
+
 ## Commands
+
+**IMPORTANT:** This project uses Bun (https://bun.sh/). Bun is an all-in-one JavaScript runtime & toolkit designed for speed, complete with a bundler, test runner, and Node.js-compatible package manager. **DO NOT USE npm commands**.
 
 **Development:**
 ```bash
-bun dev              # Start all apps in parallel in development mode (web, app, api, email)
-bun dev:web          # Marketing site only (port 3001) in development mode
-bun dev:app          # Main app only (port 3000) in development mode
-bun dev:jobs         # Background jobs only in development mode
-bun dev:api          # API only in development mode
-bun dev:email        # Email app only in development mode
+bun dev              # Start all apps in parallel (web, app, api, email)
+bun dev:web          # Marketing site only (port 3001)
+bun dev:app          # Main app only (port 3000)
+bun dev:jobs         # Background jobs only (Trigger.dev)
+bun dev:email        # Email development server (port 3003)
 ```
-**Database:**
+
+**Database Management:**
 ```bash
 bun migrate          # Run Supabase migrations
 bun seed             # Populate database with seed data
+bun reset            # Reset Supabase database (apps/api)
+bun generate         # Generate TypeScript types from Supabase schema
+bun login            # Supabase login (apps/api)
+```
+
+**Testing:**
+```bash
+bun test             # Run tests in parallel across workspace
 ```
 
 **Code Quality:**
@@ -29,9 +47,15 @@ bun typecheck        # TypeScript checking across workspace
 
 **Build & Deploy:**
 ```bash
-bun build            # Production build
+bun build            # Production build for all apps
 bun start:web        # Start web app in production
 bun start:app        # Start main app in production
+```
+
+**Maintenance:**
+```bash
+bun clean            # Clean git repository (remove node_modules)
+bun clean:workspaces # Clean all workspace build artifacts
 ```
 
 ## Architecture
@@ -106,13 +130,20 @@ VoltAgent - AI agent framework (voltagent.dev)
 
 **Environment Setup:**
 Each app has separate `.env` files. Copy from `.env.example` and configure:
-- Supabase (database, auth)
-- Upstash Redis (caching, rate limiting) 
-- Resend (email delivery)
-- Sentry (error monitoring)
-- OpenPanel (analytics)
-- Dub (link shortening)
-- VoltAgent (AI agent framework)
+
+**Required for all apps:**
+- `NEXT_PUBLIC_SUPABASE_URL` - Supabase project URL
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` - Supabase anonymous key
+- `SUPABASE_SERVICE_KEY` - Supabase service role key (server-side only)
+
+**Additional services:**
+- **Upstash Redis**: `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`
+- **Resend Email**: `RESEND_API_KEY`, `RESEND_AUDIENCE_ID`
+- **Sentry**: `NEXT_PUBLIC_SENTRY_DSN`, `SENTRY_AUTH_TOKEN`
+- **OpenPanel**: `OPENPANEL_CLIENT_ID`, `OPENPANEL_CLIENT_SECRET`
+- **Dub**: `DUB_API_KEY`
+- **VoltAgent**: AI agent configuration
+- **Trigger.dev**: `TRIGGER_SECRET_KEY`
 
 **Development Notes:**
 - Use functional components with TypeScript interfaces
@@ -122,8 +153,429 @@ Each app has separate `.env` files. Copy from `.env.example` and configure:
 - Use Zod for validation, model errors as return values
 - VoltAgent tools use Zod schemas for parameter validation (compatible with Zod 3.24.2+)
 - Mobile-first responsive design with Tailwind
-- ALWAYS refer to VoltAgent Documentation at https://voltagent.dev/docs/ before building any Agents and only use this framework. 
+- ALWAYS refer to VoltAgent Documentation at https://voltagent.dev/docs/ before building any Agents and only use this framework
 - ALWAYS build VoltAgent AI Agents with Vercel AI provider. Documentation at https://voltagent.dev/docs/providers/vercel-ai/
 - Any suitable VoltAgent patterns can be used when building agents (agents, tools, workflows, etc.) - no restrictions on VoltAgent features
 - ALWAYS use shadcn library https://ui.shadcn.com/docs/ for ALL UI components and layout - this is MANDATORY
 - ALWAYS make sure that the user interface is responsive for desktop, tablet and mobile form factors
+- NEVER commit changes unless explicitly asked by the user
+- Code comments are discouraged unless specifically requested
+
+**Theme for shadcn, tailwind, user interface**
+### Theme
+```css
+   :root {
+   --background: #fcfcfc;
+   --foreground: #000000;
+   --card: #ffffff;
+   --card-foreground: #000000;
+   --popover: #fcfcfc;
+   --popover-foreground: #000000;
+   --primary: #1b365d;
+   --primary-foreground: #ffffff;
+   --secondary: #ebebeb;
+   --secondary-foreground: #000000;
+   --muted: #f5f5f5;
+   --muted-foreground: #525252;
+   --accent: #ebebeb;
+   --accent-foreground: #ff6b35;
+   --destructive: #e54b4f;
+   --destructive-foreground: #ffffff;
+   --border: #e4e4e4;
+   --input: #ebebeb;
+   --ring: #000000;
+   --sidebar: #fcfcfc;
+   --sidebar-foreground: #000000;
+   --sidebar-primary: #000000;
+   --sidebar-primary-foreground: #ffffff;
+   --sidebar-accent: #ebebeb;
+   --sidebar-accent-foreground: #000000;
+   --sidebar-border: #ebebeb;
+   --sidebar-ring: #000000;
+   }
+
+   .dark {
+   --background: #000000;
+   --foreground: #ffffff;
+   --card: #090909;
+   --card-foreground: #ffffff;
+   --popover: #121212;
+   --popover-foreground: #ffffff;
+   --primary: #ffffff;
+   --primary-foreground: #000000;
+   --secondary: #222222;
+   --secondary-foreground: #ffffff;
+   --muted: #1d1d1d;
+   --muted-foreground: #a4a4a4;
+   --accent: #333333;
+   --accent-foreground: #ffffff;
+   --destructive: #ff5b5b;
+   --destructive-foreground: #000000;
+   --border: #242424;
+   --input: #333333;
+   --ring: #a4a4a4
+   --sidebar-foreground: #ffffff;
+   --sidebar-primary: #ffffff;
+   --sidebar-primary-foreground: #000000;
+   --sidebar-accent: #333333;
+   --sidebar-accent-foreground: #ffffff;
+   --sidebar-border: #333333;
+   --sidebar-ring: #a4a4a4;
+   }
+
+   @theme inline {
+   --color-background: var(--background);
+   --color-foreground: var(--foreground);
+   --color-card: var(--card);
+   --color-card-foreground: var(--card-foreground);
+   --color-popover: var(--popover);
+   --color-popover-foreground: var(--popover-foreground);
+   --color-primary: var(--primary);
+   --color-primary-foreground: var(--primary-foreground);
+   --color-secondary: var(--secondary);
+   --color-secondary-foreground: var(--secondary-foreground);
+   --color-muted: var(--muted);
+   --color-muted-foreground: var(--muted-foreground);
+   --color-accent: var(--accent);
+   --color-accent-foreground: var(--accent-foreground);
+   --color-destructive: var(--destructive);
+   --color-destructive-foreground: var(--destructive-foreground);
+   --color-border: var(--border);
+   --color-input: var(--input);
+   --color-ring: var(--ring);
+   --color-chart-1: var(--chart-1);
+   --color-chart-2: var(--chart-2);
+   --color-chart-3: var(--chart-3);
+   --color-chart-4: var(--chart-4);
+   --color-chart-5: var(--chart-5);
+   --color-sidebar: var(--sidebar);
+   --color-sidebar-foreground: var(--sidebar-foreground);
+   --color-sidebar-primary: var(--sidebar-primary);
+   --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+   --color-sidebar-accent: var(--sidebar-accent);
+   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+   --color-sidebar-border: var(--sidebar-border);
+   --color-sidebar-ring: var(--sidebar-ring);
+
+   --font-sans: var(--font-sans);
+   --font-mono: var(--font-mono);
+   --font-serif: var(--font-serif);
+
+   --radius-sm: calc(var(--radius) - 4px);
+   --radius-md: calc(var(--radius) - 2px);
+   --radius-lg: var(--radius);
+   --radius-xl: calc(var(--radius) + 4px);
+
+   --shadow-2xs: var(--shadow-2xs);
+   --shadow-xs: var(--shadow-xs);
+   --shadow-sm: var(--shadow-sm);
+   --shadow: var(--shadow);
+   --shadow-md: var(--shadow-md);
+   --shadow-lg: var(--shadow-lg);
+   --shadow-xl: var(--shadow-xl);
+   --shadow-2xl: var(--shadow-2xl);
+   }
+```
+
+## Database Schema
+
+The project uses Supabase (PostgreSQL) with the following core tables:
+
+**Users Table:**
+- Integrated with Supabase Auth
+- Stores user profiles and metadata
+- Protected by Row Level Security (RLS)
+
+**Posts Table:**
+- User-generated content
+- Linked to users via foreign key
+- Automatic timestamp management
+
+**Key Database Patterns:**
+- All tables use UUID primary keys
+- RLS policies enforce data access control
+- Automatic created_at/updated_at timestamps
+- Foreign key constraints maintain referential integrity
+
+## Common Workflows
+
+### Starting Fresh Development
+1. Clone the repository
+2. Install dependencies: `bun install`
+3. Copy `.env.example` to `.env` in each app directory
+4. Configure environment variables
+5. Start Supabase: `cd apps/api && bun dev`
+6. Run migrations: `bun migrate`
+7. Seed database: `bun seed`
+8. Start development: `bun dev`
+
+### Adding New Features
+1. Create feature branch from main
+2. Use Server Components by default
+3. Add Server Actions for mutations
+4. Use Shadcn components for UI
+5. Add proper TypeScript types
+6. Test across all breakpoints
+7. Run `bun lint` and `bun typecheck` before committing
+
+### Working with AI Agents
+1. Always check VoltAgent docs first
+2. Use Vercel AI provider
+3. Define tools with Zod schemas
+4. Handle errors gracefully
+5. Test agent responses thoroughly
+
+## Authentication Implementation
+
+The project uses **Supabase Auth** with SSR (Server-Side Rendering) for secure authentication.
+
+### Authentication Architecture
+
+**Three Supabase Clients:**
+1. **Browser Client** (`@v1/supabase/client`) - Client-side operations
+2. **Server Client** (`@v1/supabase/server`) - Server Components & Actions
+3. **Middleware Client** - Session management in middleware
+
+### Session Management
+- Sessions stored in secure HTTP-only cookies
+- Automatic session refresh via middleware
+- No React Context needed - server-first approach
+- JWT expiry: 10 hours (36000 seconds)
+
+### Protected Routes
+Middleware (`apps/app/src/middleware.ts`) handles protection:
+```typescript
+// Redirects unauthenticated users to /login
+if (!request.nextUrl.pathname.endsWith("/login") && !user) {
+  return NextResponse.redirect(new URL("/login", request.url));
+}
+```
+
+### Available Auth Methods
+**Currently Implemented:**
+- ✅ Google OAuth (fully functional)
+- ✅ Session-based authentication
+- ✅ Secure cookie management
+
+**Not Yet Implemented:**
+- ❌ Email/password signup
+- ❌ Magic link authentication
+- ❌ Password reset flow
+- ❌ Email verification
+- ❌ Other OAuth providers
+
+### Authentication Flows
+
+**1. Sign In with Google:**
+```typescript
+// Client-side login
+const supabase = createClient();
+await supabase.auth.signInWithOAuth({
+  provider: "google",
+  options: {
+    redirectTo: `${origin}/api/auth/callback`
+  }
+});
+```
+
+**2. Sign Out:**
+```typescript
+// Client-side logout
+const supabase = createClient();
+await supabase.auth.signOut();
+// Redirects to /login
+```
+
+**3. Auth Callback Handler:**
+- Route: `/api/auth/callback`
+- Exchanges OAuth code for session
+- Sets session cookies
+- Redirects to dashboard
+
+### Accessing User Data
+
+**In Server Components:**
+```typescript
+import { getUser } from "@v1/supabase/queries";
+
+const user = await getUser();
+if (!user) {
+  redirect("/login");
+}
+```
+
+**In Server Actions:**
+```typescript
+// Using authActionClient (includes user in context)
+export const myAction = authActionClient
+  .schema(schema)
+  .action(async ({ parsedInput, ctx }) => {
+    const { user } = ctx; // Authenticated user
+    // Action logic
+  });
+```
+
+**In Client Components:**
+```typescript
+import { createClient } from "@v1/supabase/client";
+
+const supabase = createClient();
+const { data: { user } } = await supabase.auth.getUser();
+```
+
+### Auth Configuration Files
+- **Environment Variables:** See Environment Setup section
+- **Supabase Config:** `apps/api/supabase/config.toml`
+- **OAuth Setup:** Google provider configured
+- **Database:** Users table with RLS policies
+
+### Security Features
+- Row Level Security (RLS) on all tables
+- Rate limiting on auth actions (via Upstash)
+- Secure cookie-based sessions
+- Service role key never exposed client-side
+- Automatic user tracking in analytics
+
+## Analytics Integration (OpenPanel)
+
+The project uses OpenPanel for analytics tracking via the `@v1/analytics` package.
+
+### Setup Requirements
+
+**Environment Variables:**
+```bash
+# Client-side (public)
+NEXT_PUBLIC_OPENPANEL_CLIENT_ID=op_client_xxxxxxxxxx
+
+# Server-side (secret)
+OPENPANEL_SECRET_KEY=op_secret_yyyyyyyy
+```
+
+### Current Implementation Status
+
+**✅ Working:**
+- Analytics package configured at `packages/analytics`
+- Server-side tracking infrastructure ready
+- Web app has client-side provider (marketing site)
+- Server actions support analytics metadata
+- Auto user identification for authenticated users
+- Dev/prod environment handling (logs in dev, sends in prod)
+
+**❌ Missing:**
+- Analytics Provider not added to main app (`apps/app`) layout
+- No server actions actually using track metadata yet
+- Events definition file doesn't exist
+
+### Usage Patterns
+
+**1. Client-Side Event Tracking:**
+```typescript
+import { track } from '@v1/analytics/client';
+
+// Track custom events (only works where Provider is added)
+track({
+  event: 'button_clicked',
+  button_name: 'submit',
+  page: '/dashboard'
+});
+```
+
+**2. Server Action with Analytics:**
+```typescript
+export const myAction = authActionClient
+  .schema(mySchema)
+  .metadata({
+    name: "action-name",
+    track: {  // Optional analytics tracking
+      event: "user_action_performed", 
+      channel: "api"
+    }
+  })
+  .action(async ({ parsedInput, ctx }) => {
+    // Action logic here
+  });
+```
+
+**3. Manual Server-Side Tracking:**
+```typescript
+import { setupAnalytics } from '@v1/analytics/server';
+
+const analytics = await setupAnalytics({
+  userId: user.id,
+  fullName: user.full_name
+});
+
+analytics.track({
+  event: 'custom_server_event',
+  properties: { key: 'value' }
+});
+```
+
+### Implementation Checklist
+
+To fully implement analytics:
+
+1. **Add Provider to Main App:**
+   ```tsx
+   // In apps/app/layout.tsx
+   import { AnalyticsProvider } from '@v1/analytics/client';
+   
+   <AnalyticsProvider>
+     {children}
+   </AnalyticsProvider>
+   ```
+
+2. **Track Key Events:**
+   - User registration/login
+   - Feature usage
+   - Errors and exceptions
+   - Conversion events
+
+3. **Create Events Schema:**
+   - Add `packages/analytics/src/events.ts`
+   - Define standard event names and properties
+
+### Analytics Best Practices
+
+- Only track in production (handled automatically)
+- Use consistent event naming conventions
+- Include relevant context in event properties
+- Don't track sensitive user data
+- Use server-side tracking for critical events
+- Client-side tracking for UI interactions
+
+## Project Best Practices
+
+1. **Component Architecture:**
+   - Server Components for data fetching
+   - Client Components only when needed (interactivity)
+   - Colocate components with their routes
+
+2. **Data Fetching:**
+   - Use Server Actions for mutations
+   - Implement proper loading states
+   - Handle errors with try-catch blocks
+
+3. **Styling:**
+   - Mobile-first approach
+   - Use Tailwind utility classes
+   - Follow the defined theme system
+   - Maintain consistent spacing
+
+4. **Security:**
+   - Never expose sensitive keys client-side
+   - Use RLS policies for data access
+   - Validate all user inputs with Zod
+   - Rate limit sensitive operations
+
+5. **Performance:**
+   - Optimize images with Next.js Image
+   - Use dynamic imports for heavy components
+   - Implement proper caching strategies
+   - Monitor with Sentry
+
+6. **Analytics:**
+   - Track important user actions
+   - Use metadata in server actions
+   - Respect user privacy
+   - Test tracking in development (check console logs)

@@ -1,19 +1,19 @@
-import { AuthForm } from "@/components/auth-form";
+import { ForgotPasswordForm } from "@/components/forgot-password-form";
 import Image from "next/image";
 
 export const metadata = {
-  title: "Login",
-  description: "Sign in to your VertragX account",
+  title: "Forgot Password",
+  description: "Reset your VertragX password",
 };
 
-export default function LoginPage() {
+export default function ForgotPasswordPage() {
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center p-4">
       <div className="w-full max-w-md space-y-8">
         <div className="flex flex-col items-center">
           <Image src="/logo.png" alt="VertragX" width={200} height={200} className="mb-8" />
         </div>
-        <AuthForm mode="signin" />
+        <ForgotPasswordForm />
       </div>
     </div>
   );
