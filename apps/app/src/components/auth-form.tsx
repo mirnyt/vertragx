@@ -8,11 +8,9 @@ import { Button } from "@v1/ui/button";
 import { Input } from "@v1/ui/input";
 import { Label } from "@v1/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@v1/ui/card";
-import { Separator } from "@v1/ui/separator";
 import { signUpAction } from "@/actions/auth/sign-up-action";
 import { signInAction } from "@/actions/auth/sign-in-action";
 import { signUpSchema, signInSchema } from "@/actions/auth/schema";
-import { GoogleSignin } from "./google-signin";
 import Link from "next/link";
 import { z } from "zod";
 import { Loader2 } from "lucide-react";
@@ -83,21 +81,6 @@ export function AuthForm({ mode }: AuthFormProps) {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="space-y-2">
-          <GoogleSignin />
-        </div>
-        
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <Separator />
-          </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-background px-2 text-muted-foreground">
-              Or continue with
-            </span>
-          </div>
-        </div>
-
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {isSignUp && (
             <div className="space-y-2">
@@ -105,11 +88,11 @@ export function AuthForm({ mode }: AuthFormProps) {
               <Input
                 id="fullName"
                 placeholder="John Doe"
-                {...register("fullName" as keyof FormData)}
+                {...register("fullName" as any)}
                 disabled={isLoading}
               />
-              {errors.fullName && (
-                <p className="text-sm text-destructive">{errors.fullName.message}</p>
+              {(errors as any).fullName && (
+                <p className="text-sm text-destructive">{(errors as any).fullName.message}</p>
               )}
             </div>
           )}

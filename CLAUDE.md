@@ -145,6 +145,9 @@ Each app has separate `.env` files. Copy from `.env.example` and configure:
 - **VoltAgent**: AI agent configuration
 - **Trigger.dev**: `TRIGGER_SECRET_KEY`
 
+**Optional services (not currently used):**
+- **Google OAuth**: `GOOGLE_CLIENT_ID`, `GOOGLE_SECRET` (disabled in config)
+
 **Development Notes:**
 - Use functional components with TypeScript interfaces
 - Prefer Server Components over client components
@@ -353,32 +356,40 @@ if (!request.nextUrl.pathname.endsWith("/login") && !user) {
 
 ### Available Auth Methods
 **Currently Implemented:**
-- ✅ Google OAuth (fully functional)
+- ✅ Email/password authentication (signup & signin)
+- ✅ Email verification for new accounts
+- ✅ Password reset flow via email
 - ✅ Session-based authentication
 - ✅ Secure cookie management
 
-**Not Yet Implemented:**
-- ❌ Email/password signup
+**Not Implemented:**
 - ❌ Magic link authentication
-- ❌ Password reset flow
-- ❌ Email verification
-- ❌ Other OAuth providers
+- ❌ OAuth providers (Google OAuth disabled but code preserved)
 
 ### Authentication Flows
 
-**1. Sign In with Google:**
+**1. Sign Up with Email/Password:**
 ```typescript
-// Client-side login
-const supabase = createClient();
-await supabase.auth.signInWithOAuth({
-  provider: "google",
-  options: {
-    redirectTo: `${origin}/api/auth/callback`
-  }
+// Server action handles registration
+await signUpAction({
+  email: "user@example.com",
+  password: "securepassword",
+  fullName: "John Doe"
 });
+// User receives verification email
 ```
 
-**2. Sign Out:**
+**2. Sign In with Email/Password:**
+```typescript
+// Server action handles login
+await signInAction({
+  email: "user@example.com",
+  password: "securepassword"
+});
+// Redirects to dashboard on success
+```
+
+**3. Sign Out:**
 ```typescript
 // Client-side logout
 const supabase = createClient();
@@ -386,9 +397,24 @@ await supabase.auth.signOut();
 // Redirects to /login
 ```
 
-**3. Auth Callback Handler:**
+**4. Password Reset Flow:**
+```typescript
+// Request password reset
+await forgotPasswordAction({
+  email: "user@example.com"
+});
+// User receives reset email with link to /reset-password
+
+// Set new password
+await resetPasswordAction({
+  password: "newpassword",
+  confirmPassword: "newpassword"
+});
+```
+
+**5. Auth Callback Handler:**
 - Route: `/api/auth/callback`
-- Exchanges OAuth code for session
+- Handles email verification confirmations
 - Sets session cookies
 - Redirects to dashboard
 
@@ -426,7 +452,8 @@ const { data: { user } } = await supabase.auth.getUser();
 ### Auth Configuration Files
 - **Environment Variables:** See Environment Setup section
 - **Supabase Config:** `apps/api/supabase/config.toml`
-- **OAuth Setup:** Google provider configured
+- **Email Auth:** Enabled with verification and signup
+- **OAuth Setup:** Google provider disabled (can be re-enabled if needed)
 - **Database:** Users table with RLS policies
 
 ### Security Features
