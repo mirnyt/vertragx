@@ -1,7 +1,7 @@
 "use server";
 
 import { actionClientWithMeta } from "@/actions/safe-action";
-import { calculateExpression } from "@v1/voltagent/agents";
+import { calculateExpressionClient } from "@v1/voltagent/agents";
 import { calculateExpressionInputSchema } from "@v1/voltagent/schemas";
 
 export const calculateExpressionAction = actionClientWithMeta
@@ -10,6 +10,6 @@ export const calculateExpressionAction = actionClientWithMeta
     name: "calculate-expression",
   })
   .action(async ({ parsedInput: { expression } }) => {
-    const result = await calculateExpression(expression);
+    const result = await calculateExpressionClient(expression);
     return result;
   });
