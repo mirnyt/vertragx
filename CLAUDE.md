@@ -42,7 +42,7 @@ This is a **Turborepo monorepo** with Bun package manager for a production SaaS 
 - `apps/web/` - Next.js marketing site (port 3001)
 - `apps/app/` - Main SaaS application (port 3000) 
 - `apps/api/` - Supabase backend (database, auth, edge functions)
-- `packages/` - Shared packages (ui, supabase, analytics, email, jobs, kv, logger)
+- `packages/` - Shared packages (ui, supabase, analytics, email, jobs, kv, logger, voltagent)
 
 ├── apps                         # App workspace
 │    ├── api                     # Supabase (API, Auth, Storage, Realtime, Edge Functions)
@@ -57,6 +57,7 @@ This is a **Turborepo monorepo** with Bun package manager for a production SaaS 
 │    ├── logger                  # Logger library
 │    ├── supabase                # Supabase - Queries, Mutations, Clients
 │    └── ui                      # Shared UI components (Shadcn)
+│    └── voltagent               # AI Agent Framework (VoltAgent.dev)
 ├── tooling                      # are the shared configuration that are used by the apps and packages
 │    └── typescript              # Shared TypeScript configuration
 ├── .cursorrules                 # Cursor rules specific to this project
@@ -111,6 +112,7 @@ Each app has separate `.env` files. Copy from `.env.example` and configure:
 - Sentry (error monitoring)
 - OpenPanel (analytics)
 - Dub (link shortening)
+- VoltAgent (AI agent framework)
 
 **Development Notes:**
 - Use functional components with TypeScript interfaces
@@ -120,3 +122,8 @@ Each app has separate `.env` files. Copy from `.env.example` and configure:
 - Use Zod for validation, model errors as return values
 - VoltAgent tools use Zod schemas for parameter validation (compatible with Zod 3.24.2+)
 - Mobile-first responsive design with Tailwind
+- ALWAYS refer to VoltAgent Documentation at https://voltagent.dev/docs/ before building any Agents and only use this framework. 
+- ALWAYS build VoltAgent AI Agents with Vercel AI provider. Documentation at https://voltagent.dev/docs/providers/vercel-ai/
+- Any suitable VoltAgent patterns can be used when building agents (agents, tools, workflows, etc.) - no restrictions on VoltAgent features
+- ALWAYS use shadcn library https://ui.shadcn.com/docs/ for ALL UI components and layout - this is MANDATORY
+- ALWAYS make sure that the user interface is responsive for desktop, tablet and mobile form factors
