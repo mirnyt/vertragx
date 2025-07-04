@@ -1,12 +1,20 @@
 "use server";
 
-import { actionClient } from "../safe-action";
+import { actionClientWithMeta } from "../safe-action";
 import { resetPasswordSchema } from "./schema";
 import { createClient } from "@v1/supabase/server";
 import { redirect } from "next/navigation";
+import { mapSupabaseError } from "@/lib/auth-errors";
 
-export const resetPasswordAction = actionClient
+export const resetPasswordAction = actionClientWithMeta
   .schema(resetPasswordSchema)
+  .metadata({
+    name: "reset-password",
+    track: {
+      event: "password_reset_completed",
+      channel: "auth"
+    }
+  })
   .action(async ({ parsedInput: { password } }) => {
     const supabase = createClient();
 
@@ -15,7 +23,8 @@ export const resetPasswordAction = actionClient
     });
 
     if (error) {
-      throw new Error(error.message);
+      const authError = mapSupabaseError(error.message);
+      throw new Error(authError.message);
     }
 
     redirect("/login?message=password-updated");

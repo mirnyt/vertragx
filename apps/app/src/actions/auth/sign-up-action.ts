@@ -1,13 +1,20 @@
 "use server";
 
-import { actionClient } from "../safe-action";
+import { actionClientWithMeta } from "../safe-action";
 import { signUpSchema } from "./schema";
 import { createClient } from "@v1/supabase/server";
-import { redirect } from "next/navigation";
 import { headers } from "next/headers";
+import { mapSupabaseError } from "@/lib/auth-errors";
 
-export const signUpAction = actionClient
+export const signUpAction = actionClientWithMeta
   .schema(signUpSchema)
+  .metadata({
+    name: "sign-up",
+    track: {
+      event: "user_signed_up",
+      channel: "auth"
+    }
+  })
   .action(async ({ parsedInput: { email, password, fullName } }) => {
     const supabase = createClient();
     const origin = headers().get("origin");
@@ -24,11 +31,13 @@ export const signUpAction = actionClient
     });
 
     if (error) {
-      throw new Error(error.message);
+      const authError = mapSupabaseError(error.message);
+      throw new Error(authError.message);
     }
 
     if (data.user && data.user.identities && data.user.identities.length === 0) {
-      throw new Error("Email already registered. Please sign in instead.");
+      const authError = mapSupabaseError("Email already registered");
+      throw new Error(authError.message);
     }
 
     return {

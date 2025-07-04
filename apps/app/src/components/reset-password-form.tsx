@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAction } from "next-safe-action/hooks";
 import { Button } from "@v1/ui/button";
-import { Input } from "@v1/ui/input";
+import { PasswordInput } from "@v1/ui/password-input";
 import { Label } from "@v1/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@v1/ui/card";
 import { resetPasswordAction } from "@/actions/auth/reset-password-action";
@@ -49,10 +49,10 @@ export function ResetPasswordForm() {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="password">New Password</Label>
-            <Input
+            <PasswordInput
               id="password"
-              type="password"
               placeholder="••••••••"
+              showStrengthIndicator={true}
               {...register("password")}
               disabled={mutation.isPending}
             />
@@ -63,9 +63,8 @@ export function ResetPasswordForm() {
 
           <div className="space-y-2">
             <Label htmlFor="confirmPassword">Confirm Password</Label>
-            <Input
+            <PasswordInput
               id="confirmPassword"
-              type="password"
               placeholder="••••••••"
               {...register("confirmPassword")}
               disabled={mutation.isPending}

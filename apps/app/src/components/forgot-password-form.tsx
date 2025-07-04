@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAction } from "next-safe-action/hooks";
@@ -8,42 +7,43 @@ import { Button } from "@v1/ui/button";
 import { Input } from "@v1/ui/input";
 import { Label } from "@v1/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@v1/ui/card";
+import { useToast } from "@v1/ui/use-toast";
 import { forgotPasswordAction } from "@/actions/auth/forgot-password-action";
-import { forgotPasswordSchema } from "@/actions/auth/schema";
+import { forgotPasswordSchema, type ForgotPasswordFormData } from "@/actions/auth/schema";
 import Link from "next/link";
-import { z } from "zod";
 import { Loader2, ArrowLeft } from "lucide-react";
 
-type FormData = z.infer<typeof forgotPasswordSchema>;
-
 export function ForgotPasswordForm() {
-  const [success, setSuccess] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const { toast } = useToast();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({
+  } = useForm<ForgotPasswordFormData>({
     resolver: zodResolver(forgotPasswordSchema),
   });
 
   const mutation = useAction(forgotPasswordAction, {
     onSuccess: (data) => {
       if (data.data?.success) {
-        setSuccess(data.data.message);
-        setError(null);
+        toast({
+          variant: "success",
+          title: "Reset email sent!",
+          description: data.data.message,
+        });
       }
     },
     onError: (error) => {
-      setError(error.error.serverError || "Something went wrong");
-      setSuccess(null);
+      toast({
+        variant: "destructive",
+        title: "Failed to send reset email",
+        description: error.error.serverError || "Something went wrong",
+      });
     },
   });
 
-  const onSubmit = (data: FormData) => {
-    setError(null);
-    setSuccess(null);
+  const onSubmit = (data: ForgotPasswordFormData) => {
     mutation.execute(data);
   };
 
@@ -63,6 +63,7 @@ export function ForgotPasswordForm() {
               id="email"
               type="email"
               placeholder="john@example.com"
+              autoFocus
               {...register("email")}
               disabled={mutation.isPending}
             />
@@ -70,18 +71,6 @@ export function ForgotPasswordForm() {
               <p className="text-sm text-destructive">{errors.email.message}</p>
             )}
           </div>
-
-          {error && (
-            <div className="rounded-md bg-destructive/10 p-3">
-              <p className="text-sm text-destructive">{error}</p>
-            </div>
-          )}
-
-          {success && (
-            <div className="rounded-md bg-green-50 p-3">
-              <p className="text-sm text-green-600">{success}</p>
-            </div>
-          )}
 
           <Button type="submit" className="w-full" disabled={mutation.isPending}>
             {mutation.isPending ? (

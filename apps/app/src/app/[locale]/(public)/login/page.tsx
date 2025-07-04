@@ -1,4 +1,5 @@
 import { AuthForm } from "@/components/auth-form";
+import { LoginErrorHandler } from "@/components/login-error-handler";
 import Image from "next/image";
 
 export const metadata = {
@@ -14,6 +15,7 @@ export default function LoginPage() {
           <Image src="/logo.png" alt="VertragX" width={200} height={200} className="mb-8" />
         </div>
         <AuthForm mode="signin" />
+        <LoginErrorHandler />
       </div>
     </div>
   );

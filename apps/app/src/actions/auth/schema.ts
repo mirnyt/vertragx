@@ -22,3 +22,14 @@ export const resetPasswordSchema = z.object({
   message: "Passwords don't match",
   path: ["confirmPassword"],
 });
+
+// Export form data types for better type safety
+export type SignUpFormData = z.infer<typeof signUpSchema>;
+export type SignInFormData = z.infer<typeof signInSchema>;
+export type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>;
+export type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;
+
+// Conditional type for auth form
+export type AuthFormData<T extends "signin" | "signup"> = T extends "signup" 
+  ? SignUpFormData 
+  : SignInFormData;

@@ -1,12 +1,20 @@
 "use server";
 
-import { actionClient } from "../safe-action";
+import { actionClientWithMeta } from "../safe-action";
 import { forgotPasswordSchema } from "./schema";
 import { createClient } from "@v1/supabase/server";
 import { headers } from "next/headers";
+import { mapSupabaseError } from "@/lib/auth-errors";
 
-export const forgotPasswordAction = actionClient
+export const forgotPasswordAction = actionClientWithMeta
   .schema(forgotPasswordSchema)
+  .metadata({
+    name: "forgot-password",
+    track: {
+      event: "password_reset_requested",
+      channel: "auth"
+    }
+  })
   .action(async ({ parsedInput: { email } }) => {
     const supabase = createClient();
     const origin = headers().get("origin");
@@ -16,7 +24,8 @@ export const forgotPasswordAction = actionClient
     });
 
     if (error) {
-      throw new Error(error.message);
+      const authError = mapSupabaseError(error.message);
+      throw new Error(authError.message);
     }
 
     return {

@@ -1,18 +1,24 @@
 "use client";
 
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAction } from "next-safe-action/hooks";
 import { Button } from "@v1/ui/button";
 import { Input } from "@v1/ui/input";
+import { PasswordInput } from "@v1/ui/password-input";
 import { Label } from "@v1/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@v1/ui/card";
+import { useToast } from "@v1/ui/use-toast";
 import { signUpAction } from "@/actions/auth/sign-up-action";
 import { signInAction } from "@/actions/auth/sign-in-action";
-import { signUpSchema, signInSchema } from "@/actions/auth/schema";
+import { 
+  signUpSchema, 
+  signInSchema, 
+  type AuthFormData,
+  type SignUpFormData,
+  type SignInFormData 
+} from "@/actions/auth/schema";
 import Link from "next/link";
-import { z } from "zod";
 import { Loader2 } from "lucide-react";
 
 type AuthFormProps = {
@@ -20,12 +26,12 @@ type AuthFormProps = {
 };
 
 export function AuthForm({ mode }: AuthFormProps) {
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
-
+  const { toast } = useToast();
   const isSignUp = mode === "signup";
   const schema = isSignUp ? signUpSchema : signInSchema;
-  type FormData = z.infer<typeof schema>;
+  
+  // Use proper conditional types
+  type FormData = AuthFormData<typeof mode>;
 
   const {
     register,
@@ -38,33 +44,39 @@ export function AuthForm({ mode }: AuthFormProps) {
   const signUpMutation = useAction(signUpAction, {
     onSuccess: (data) => {
       if (data.data?.success) {
-        setSuccess(data.data.message);
-        setError(null);
+        toast({
+          variant: "success",
+          title: "Account created!",
+          description: data.data.message,
+        });
       }
     },
     onError: (error) => {
-      setError(error.error.serverError || "Something went wrong");
-      setSuccess(null);
+      toast({
+        variant: "destructive",
+        title: "Sign up failed",
+        description: error.error.serverError || "Something went wrong",
+      });
     },
   });
 
   const signInMutation = useAction(signInAction, {
     onError: (error) => {
-      setError(error.error.serverError || "Invalid email or password");
-      setSuccess(null);
+      toast({
+        variant: "destructive",
+        title: "Sign in failed",
+        description: error.error.serverError || "Invalid email or password",
+      });
     },
   });
 
   const isLoading = signUpMutation.isPending || signInMutation.isPending;
 
   const onSubmit = (data: FormData) => {
-    setError(null);
-    setSuccess(null);
-    
     if (isSignUp) {
-      signUpMutation.execute(data as z.infer<typeof signUpSchema>);
+      signUpMutation.execute(data as SignUpFormData);
     } else {
-      signInMutation.execute(data as z.infer<typeof signInSchema>);
+      signInMutation.execute(data as SignInFormData);
     }
   };
 
@@ -88,11 +100,12 @@ export function AuthForm({ mode }: AuthFormProps) {
               <Input
                 id="fullName"
                 placeholder="John Doe"
-                {...register("fullName" as any)}
+                autoFocus
+                {...register("fullName" as keyof FormData)}
                 disabled={isLoading}
               />
-              {(errors as any).fullName && (
-                <p className="text-sm text-destructive">{(errors as any).fullName.message}</p>
+              {"fullName" in errors && errors.fullName && (
+                <p className="text-sm text-destructive">{errors.fullName.message}</p>
               )}
             </div>
           )}
@@ -103,6 +116,7 @@ export function AuthForm({ mode }: AuthFormProps) {
               id="email"
               type="email"
               placeholder="john@example.com"
+              autoFocus={!isSignUp}
               {...register("email")}
               disabled={isLoading}
             />
@@ -120,10 +134,10 @@ export function AuthForm({ mode }: AuthFormProps) {
                 </Link>
               )}
             </div>
-            <Input
+            <PasswordInput
               id="password"
-              type="password"
               placeholder="••••••••"
+              showStrengthIndicator={isSignUp}
               {...register("password")}
               disabled={isLoading}
             />
@@ -131,18 +145,6 @@ export function AuthForm({ mode }: AuthFormProps) {
               <p className="text-sm text-destructive">{errors.password.message}</p>
             )}
           </div>
-
-          {error && (
-            <div className="rounded-md bg-destructive/10 p-3">
-              <p className="text-sm text-destructive">{error}</p>
-            </div>
-          )}
-
-          {success && (
-            <div className="rounded-md bg-green-50 p-3">
-              <p className="text-sm text-green-600">{success}</p>
-            </div>
-          )}
 
           <Button type="submit" className="w-full" disabled={isLoading}>
             {isLoading ? (
