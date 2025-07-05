@@ -17,11 +17,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
           {/* Main Content Area */}
           <main className="flex-1 overflow-auto bg-muted/20">
-            {children}
+            <div className="min-h-full flex flex-col">
+              <div className="flex-1">
+                {children}
+              </div>
+              {/* Footer */}
+              <AppFooter />
+            </div>
           </main>
-
-          {/* Footer */}
-          <AppFooter />
         </div>
       </div>
     </SidebarProvider>

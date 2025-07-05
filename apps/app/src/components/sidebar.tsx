@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useSidebar } from "./sidebar-provider";
 import { 
@@ -79,8 +80,14 @@ export function Sidebar({ className }: SidebarProps) {
         {/* Sidebar Header */}
         <div className="flex items-center justify-center h-16 border-b border-border px-2 flex-shrink-0">
           {/* VertragX Logo */}
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-accent-foreground to-primary flex items-center justify-center shadow-sm">
-            <span className="text-white font-bold text-sm">VX</span>
+          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-accent-foreground to-primary flex items-center justify-center shadow-sm overflow-hidden">
+            <Image 
+              src="/logoicon.png" 
+              alt="VertragX Logo" 
+              width={40} 
+              height={40} 
+              className="w-10 h-10 object-cover"
+            />
           </div>
         </div>
 

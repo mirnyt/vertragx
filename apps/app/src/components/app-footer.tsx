@@ -6,6 +6,9 @@ export function AppFooter() {
           <button type="button" className="hover:text-foreground transition-colors">Privacy Policy</button>
           <button type="button" className="hover:text-foreground transition-colors">Terms of Service</button>
         </div>
+        <div className="flex items-center justify-center flex-shrink-0">
+          <img src="/logo.png" alt="App Logo" className="h-10 md:h-16 w-auto" />
+        </div>
         <div className="flex items-center gap-4">
           <button type="button" className="hover:text-foreground transition-colors">Service Status</button>
           <button type="button" className="hover:text-foreground transition-colors">API</button>
