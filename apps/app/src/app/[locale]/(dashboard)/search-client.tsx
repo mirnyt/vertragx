@@ -22,31 +22,32 @@ export function SearchClient() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-start pt-[27vh] px-3 sm:px-4 md:px-6 lg:px-8">
+    <div className="min-h-screen bg-background flex flex-col items-center justify-start pt-[20vh] px-3 sm:px-4 md:px-6 lg:px-8">
       <div className="w-full max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-4xl mx-auto text-center space-y-4 sm:space-y-5 md:space-y-6">
         {/* Logo */}
-        <div className="space-y-2 sm:space-y-3">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground tracking-tight">
-            VertragX
-          </h1>
+        <div className="flex justify-center mb-0 pb-0">
+          <img
+            src="/logo.png"
+            alt="VertragX Logo"
+            className="mx-auto h-20 sm:h-28 lg:h-36 w-auto"
+            draggable={false}
+          />
         </div>
 
         {/* Subtitle */}
-        <div className="space-y-1 sm:space-y-2">
-          <h2 className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground font-medium leading-relaxed px-2 sm:px-0">
+        <div className="-mt-2">
+          <h2 className="text-base sm:text-lg md:text-2xl lg:text-3xl text-muted-foreground font-semibold leading-relaxed px-2 sm:px-0">
             Find products and B2B insights with AI
           </h2>
         </div>
 
         {/* Search Component */}
         <div className="w-full flex items-center justify-center">
-          <div className="relative w-full max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-3xl">
+          <div className="relative w-full max-w-md sm:max-w-xl md:max-w-3xl lg:max-w-4xl">
             <div className="relative group">
-              {/* Enhanced gradient glow effects */}
-              <div className="absolute -inset-2 sm:-inset-3 bg-gradient-to-r from-accent-foreground/20 via-accent-foreground/10 to-accent-foreground/20 rounded-xl sm:rounded-2xl blur-lg sm:blur-xl opacity-20 group-hover:opacity-40 transition-all duration-700" />
-              <div className="absolute -inset-1 bg-gradient-to-r from-accent-foreground/20 to-accent-foreground/20 rounded-lg sm:rounded-xl opacity-10 blur" />
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-accent-foreground/10 to-accent-foreground/10 rounded-md sm:rounded-lg opacity-10" />
-              
+              {/* Impactful glow and border */}
+              <div className="absolute -inset-3 sm:-inset-4 bg-gradient-to-r from-accent-foreground/20 via-accent-foreground/10 to-accent-foreground/20 rounded-2xl blur-xl opacity-30 group-hover:opacity-50 group-focus-within:opacity-60 transition-all duration-500" />
+              <div className="absolute -inset-1.5 bg-gradient-to-r from-accent/30 to-accent/30 rounded-xl opacity-20 blur" />
               <div className="relative">
                 <Input
                   type="text"
@@ -54,19 +55,19 @@ export function SearchClient() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  className="relative w-full h-12 sm:h-14 md:h-16 text-sm sm:text-base md:text-lg px-4 sm:px-6 pr-16 sm:pr-20 border-2 border-border/50 bg-background/90 backdrop-blur-sm rounded-lg sm:rounded-xl focus:border-accent-foreground/50 focus:ring-4 focus:ring-accent-foreground/20 transition-all duration-300 shadow-2xl focus:shadow-2xl resize-none leading-relaxed"
+                  className="relative w-full h-16 sm:h-20 md:h-24 text-lg sm:text-xl md:text-2xl font-medium px-8 sm:px-10 md:px-12 pr-20 border-2 border-accent bg-background/95 backdrop-blur-md rounded-2xl focus:border-accent-foreground focus:ring-4 focus:ring-accent-foreground/30 transition-all duration-300 shadow-2xl focus:shadow-accent/30 placeholder:text-muted-foreground/60 placeholder:font-semibold"
                   style={{
-                    boxShadow: '0 12px 48px -12px rgba(255, 107, 53, 0.25), 0 0 0 1px rgba(255, 107, 53, 0.15)'
+                    boxShadow: '0 12px 48px -12px rgba(255, 107, 53, 0.18), 0 0 0 2px rgba(255, 107, 53, 0.10)'
                   }}
                 />
-                
-                {/* Embedded search button */}
+                {/* Animated search button */}
                 <Button
                   onClick={handleSearch}
                   size="icon"
-                  className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 h-8 w-8 sm:h-10 sm:w-10 bg-primary hover:bg-primary/90 text-primary-foreground rounded-md sm:rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center"
+                  className="absolute right-4 sm:right-6 top-1/2 transform -translate-y-1/2 h-14 w-14 sm:h-16 sm:w-16 bg-primary hover:bg-primary/90 text-primary-foreground rounded-full shadow-lg hover:scale-105 active:scale-95 transition-all duration-200 flex items-center justify-center border-4 border-background focus:ring-2 focus:ring-primary/40"
+                  style={{ boxShadow: '0 4px 24px 0 rgba(27, 54, 93, 0.10)' }}
                 >
-                  <SearchIcon className="h-4 w-4 sm:h-5 sm:w-5" />
+                  <SearchIcon className="h-7 w-7 sm:h-8 sm:w-8" />
                 </Button>
               </div>
             </div>
