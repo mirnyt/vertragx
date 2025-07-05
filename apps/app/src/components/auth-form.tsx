@@ -7,16 +7,23 @@ import { Button } from "@v1/ui/button";
 import { Input } from "@v1/ui/input";
 import { PasswordInput } from "@v1/ui/password-input";
 import { Label } from "@v1/ui/label";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@v1/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@v1/ui/card";
 import { useToast } from "@v1/ui/use-toast";
 import { signUpAction } from "@/actions/auth/sign-up-action";
 import { signInAction } from "@/actions/auth/sign-in-action";
-import { 
-  signUpSchema, 
-  signInSchema, 
+import {
+  signUpSchema,
+  signInSchema,
   type AuthFormData,
   type SignUpFormData,
-  type SignInFormData 
+  type SignInFormData,
 } from "@/actions/auth/schema";
 import Link from "next/link";
 import { Loader2 } from "lucide-react";
@@ -29,7 +36,7 @@ export function AuthForm({ mode }: AuthFormProps) {
   const { toast } = useToast();
   const isSignUp = mode === "signup";
   const schema = isSignUp ? signUpSchema : signInSchema;
-  
+
   // Use proper conditional types
   type FormData = AuthFormData<typeof mode>;
 
@@ -105,7 +112,9 @@ export function AuthForm({ mode }: AuthFormProps) {
                 disabled={isLoading}
               />
               {"fullName" in errors && errors.fullName && (
-                <p className="text-sm text-destructive">{errors.fullName.message}</p>
+                <p className="text-sm text-destructive">
+                  {errors.fullName.message}
+                </p>
               )}
             </div>
           )}
@@ -129,7 +138,10 @@ export function AuthForm({ mode }: AuthFormProps) {
             <div className="flex items-center justify-between">
               <Label htmlFor="password">Password</Label>
               {!isSignUp && (
-                <Link href="/forgot-password" className="text-xs text-muted-foreground hover:text-primary">
+                <Link
+                  href="/forgot-password"
+                  className="text-xs text-muted-foreground hover:text-primary"
+                >
                   Forgot password?
                 </Link>
               )}
@@ -142,7 +154,9 @@ export function AuthForm({ mode }: AuthFormProps) {
               disabled={isLoading}
             />
             {errors.password && (
-              <p className="text-sm text-destructive">{errors.password.message}</p>
+              <p className="text-sm text-destructive">
+                {errors.password.message}
+              </p>
             )}
           </div>
 

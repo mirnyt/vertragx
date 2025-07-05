@@ -6,10 +6,19 @@ import { useAction } from "next-safe-action/hooks";
 import { Button } from "@v1/ui/button";
 import { Input } from "@v1/ui/input";
 import { Label } from "@v1/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@v1/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@v1/ui/card";
 import { useToast } from "@v1/ui/use-toast";
 import { forgotPasswordAction } from "@/actions/auth/forgot-password-action";
-import { forgotPasswordSchema, type ForgotPasswordFormData } from "@/actions/auth/schema";
+import {
+  forgotPasswordSchema,
+  type ForgotPasswordFormData,
+} from "@/actions/auth/schema";
 import Link from "next/link";
 import { Loader2, ArrowLeft } from "lucide-react";
 
@@ -52,7 +61,8 @@ export function ForgotPasswordForm() {
       <CardHeader className="space-y-1">
         <CardTitle className="text-2xl font-bold">Forgot Password</CardTitle>
         <CardDescription>
-          Enter your email address and we'll send you a link to reset your password.
+          Enter your email address and we'll send you a link to reset your
+          password.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -72,7 +82,11 @@ export function ForgotPasswordForm() {
             )}
           </div>
 
-          <Button type="submit" className="w-full" disabled={mutation.isPending}>
+          <Button
+            type="submit"
+            className="w-full"
+            disabled={mutation.isPending}
+          >
             {mutation.isPending ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -85,8 +99,8 @@ export function ForgotPasswordForm() {
         </form>
 
         <div className="text-center">
-          <Link 
-            href="/login" 
+          <Link
+            href="/login"
             className="text-sm text-muted-foreground hover:text-primary inline-flex items-center gap-1"
           >
             <ArrowLeft className="h-4 w-4" />

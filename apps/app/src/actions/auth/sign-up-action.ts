@@ -12,8 +12,8 @@ export const signUpAction = actionClientWithMeta
     name: "sign-up",
     track: {
       event: "user_signed_up",
-      channel: "auth"
-    }
+      channel: "auth",
+    },
   })
   .action(async ({ parsedInput: { email, password, fullName } }) => {
     const supabase = createClient();
@@ -35,13 +35,18 @@ export const signUpAction = actionClientWithMeta
       throw new Error(authError.message);
     }
 
-    if (data.user && data.user.identities && data.user.identities.length === 0) {
+    if (
+      data.user &&
+      data.user.identities &&
+      data.user.identities.length === 0
+    ) {
       const authError = mapSupabaseError("Email already registered");
       throw new Error(authError.message);
     }
 
     return {
       success: true,
-      message: "Account created successfully! Please check your email to verify your account.",
+      message:
+        "Account created successfully! Please check your email to verify your account.",
     };
   });

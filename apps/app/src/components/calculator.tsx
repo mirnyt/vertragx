@@ -6,7 +6,9 @@ import { calculateExpressionAction } from "@/actions/voltagent/calculate-action"
 
 export function Calculator() {
   const [expression, setExpression] = useState("");
-  const { execute, isPending, result, hasSucceeded, hasErrored } = useAction(calculateExpressionAction);
+  const { execute, isPending, result, hasSucceeded, hasErrored } = useAction(
+    calculateExpressionAction,
+  );
 
   const handleCalculate = () => {
     if (!expression.trim()) return;
@@ -17,14 +19,14 @@ export function Calculator() {
     if (hasErrored) {
       return "Error: Failed to calculate";
     }
-    
+
     if (hasSucceeded && result.data) {
       if (result.data.success) {
         return result.data.result || "No result";
       }
       return `Error: ${result.data.error || "Unknown error"}`;
     }
-    
+
     return "";
   };
 

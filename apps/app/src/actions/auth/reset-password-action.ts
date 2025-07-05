@@ -12,8 +12,8 @@ export const resetPasswordAction = actionClientWithMeta
     name: "reset-password",
     track: {
       event: "password_reset_completed",
-      channel: "auth"
-    }
+      channel: "auth",
+    },
   })
   .action(async ({ parsedInput: { password } }) => {
     const supabase = createClient();

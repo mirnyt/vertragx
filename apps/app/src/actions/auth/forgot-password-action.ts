@@ -12,8 +12,8 @@ export const forgotPasswordAction = actionClientWithMeta
     name: "forgot-password",
     track: {
       event: "password_reset_requested",
-      channel: "auth"
-    }
+      channel: "auth",
+    },
   })
   .action(async ({ parsedInput: { email } }) => {
     const supabase = createClient();
@@ -30,6 +30,7 @@ export const forgotPasswordAction = actionClientWithMeta
 
     return {
       success: true,
-      message: "Password reset email sent! Check your inbox for the reset link.",
+      message:
+        "Password reset email sent! Check your inbox for the reset link.",
     };
   });

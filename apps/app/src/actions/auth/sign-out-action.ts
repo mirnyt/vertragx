@@ -11,17 +11,17 @@ export const signOutAction = actionClientWithMeta
     name: "sign-out",
     track: {
       event: "user_signed_out",
-      channel: "auth"
-    }
+      channel: "auth",
+    },
   })
   .action(async () => {
     const supabase = createClient();
-    
+
     const { error } = await supabase.auth.signOut();
-    
+
     if (error) {
       throw new Error("Failed to sign out. Please try again.");
     }
-    
+
     redirect("/login");
   });

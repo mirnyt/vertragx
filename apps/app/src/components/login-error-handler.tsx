@@ -24,7 +24,8 @@ export function LoginErrorHandler() {
       toast({
         variant: "success",
         title: "Password Updated",
-        description: "Your password has been successfully updated. Please sign in with your new password.",
+        description:
+          "Your password has been successfully updated. Please sign in with your new password.",
       });
     }
   }, [searchParams, toast]);

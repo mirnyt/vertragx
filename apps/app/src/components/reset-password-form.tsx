@@ -7,7 +7,13 @@ import { useAction } from "next-safe-action/hooks";
 import { Button } from "@v1/ui/button";
 import { PasswordInput } from "@v1/ui/password-input";
 import { Label } from "@v1/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@v1/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@v1/ui/card";
 import { resetPasswordAction } from "@/actions/auth/reset-password-action";
 import { resetPasswordSchema } from "@/actions/auth/schema";
 import { z } from "zod";
@@ -41,9 +47,7 @@ export function ResetPasswordForm() {
     <Card className="w-full max-w-md">
       <CardHeader className="space-y-1">
         <CardTitle className="text-2xl font-bold">Reset Password</CardTitle>
-        <CardDescription>
-          Enter your new password below.
-        </CardDescription>
+        <CardDescription>Enter your new password below.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -57,7 +61,9 @@ export function ResetPasswordForm() {
               disabled={mutation.isPending}
             />
             {errors.password && (
-              <p className="text-sm text-destructive">{errors.password.message}</p>
+              <p className="text-sm text-destructive">
+                {errors.password.message}
+              </p>
             )}
           </div>
 
@@ -70,7 +76,9 @@ export function ResetPasswordForm() {
               disabled={mutation.isPending}
             />
             {errors.confirmPassword && (
-              <p className="text-sm text-destructive">{errors.confirmPassword.message}</p>
+              <p className="text-sm text-destructive">
+                {errors.confirmPassword.message}
+              </p>
             )}
           </div>
 
@@ -80,7 +88,11 @@ export function ResetPasswordForm() {
             </div>
           )}
 
-          <Button type="submit" className="w-full" disabled={mutation.isPending}>
+          <Button
+            type="submit"
+            className="w-full"
+            disabled={mutation.isPending}
+          >
             {mutation.isPending ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

@@ -14,11 +14,12 @@ export async function middleware(request: NextRequest) {
     I18nMiddleware(request),
   );
 
-  const isAuthRoute = request.nextUrl.pathname.endsWith("/login") || 
-                     request.nextUrl.pathname.endsWith("/signup") ||
-                     request.nextUrl.pathname.endsWith("/forgot-password") ||
-                     request.nextUrl.pathname.endsWith("/reset-password");
-  
+  const isAuthRoute =
+    request.nextUrl.pathname.endsWith("/login") ||
+    request.nextUrl.pathname.endsWith("/signup") ||
+    request.nextUrl.pathname.endsWith("/forgot-password") ||
+    request.nextUrl.pathname.endsWith("/reset-password");
+
   if (!isAuthRoute && !user) {
     return NextResponse.redirect(new URL("/login", request.url));
   }

@@ -164,121 +164,150 @@ Each app has separate `.env` files. Copy from `.env.example` and configure:
 - NEVER commit changes unless explicitly asked by the user
 - Code comments are discouraged unless specifically requested
 
-**Theme for shadcn, tailwind, user interface**
-### Theme
+
+## 🎨 UI Custom Theme Implementation
+
+### Theme Source & Application
+- **Source**: Custom theme from tweakcn.com (`npx shadcn@latest add https://tweakcn.com/r/themes/cmc4jdndn000f04jx9tj12ozt`)
+- **Mode**: Light mode only (no dark mode required)
+- **Critical**: Always use the exact CSS variables provided, NOT HSL wrapper functions
+
+### Color Palette & Usage
 ```css
-   :root {
-   --background: #fcfcfc;
-   --foreground: #000000;
-   --card: #ffffff;
-   --card-foreground: #000000;
-   --popover: #fcfcfc;
-   --popover-foreground: #000000;
-   --primary: #1b365d;
-   --primary-foreground: #ffffff;
-   --secondary: #ebebeb;
-   --secondary-foreground: #000000;
-   --muted: #f5f5f5;
-   --muted-foreground: #525252;
-   --accent: #ebebeb;
-   --accent-foreground: #ff6b35;
-   --destructive: #e54b4f;
-   --destructive-foreground: #ffffff;
-   --border: #e4e4e4;
-   --input: #ebebeb;
-   --ring: #000000;
-   --sidebar: #fcfcfc;
-   --sidebar-foreground: #000000;
-   --sidebar-primary: #000000;
-   --sidebar-primary-foreground: #ffffff;
-   --sidebar-accent: #ebebeb;
-   --sidebar-accent-foreground: #000000;
-   --sidebar-border: #ebebeb;
-   --sidebar-ring: #000000;
-   }
-
-   .dark {
-   --background: #000000;
-   --foreground: #ffffff;
-   --card: #090909;
-   --card-foreground: #ffffff;
-   --popover: #121212;
-   --popover-foreground: #ffffff;
-   --primary: #ffffff;
-   --primary-foreground: #000000;
-   --secondary: #222222;
-   --secondary-foreground: #ffffff;
-   --muted: #1d1d1d;
-   --muted-foreground: #a4a4a4;
-   --accent: #333333;
-   --accent-foreground: #ffffff;
-   --destructive: #ff5b5b;
-   --destructive-foreground: #000000;
-   --border: #242424;
-   --input: #333333;
-   --ring: #a4a4a4
-   --sidebar-foreground: #ffffff;
-   --sidebar-primary: #ffffff;
-   --sidebar-primary-foreground: #000000;
-   --sidebar-accent: #333333;
-   --sidebar-accent-foreground: #ffffff;
-   --sidebar-border: #333333;
-   --sidebar-ring: #a4a4a4;
-   }
-
-   @theme inline {
-   --color-background: var(--background);
-   --color-foreground: var(--foreground);
-   --color-card: var(--card);
-   --color-card-foreground: var(--card-foreground);
-   --color-popover: var(--popover);
-   --color-popover-foreground: var(--popover-foreground);
-   --color-primary: var(--primary);
-   --color-primary-foreground: var(--primary-foreground);
-   --color-secondary: var(--secondary);
-   --color-secondary-foreground: var(--secondary-foreground);
-   --color-muted: var(--muted);
-   --color-muted-foreground: var(--muted-foreground);
-   --color-accent: var(--accent);
-   --color-accent-foreground: var(--accent-foreground);
-   --color-destructive: var(--destructive);
-   --color-destructive-foreground: var(--destructive-foreground);
-   --color-border: var(--border);
-   --color-input: var(--input);
-   --color-ring: var(--ring);
-   --color-chart-1: var(--chart-1);
-   --color-chart-2: var(--chart-2);
-   --color-chart-3: var(--chart-3);
-   --color-chart-4: var(--chart-4);
-   --color-chart-5: var(--chart-5);
-   --color-sidebar: var(--sidebar);
-   --color-sidebar-foreground: var(--sidebar-foreground);
-   --color-sidebar-primary: var(--sidebar-primary);
-   --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-   --color-sidebar-accent: var(--sidebar-accent);
-   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-   --color-sidebar-border: var(--sidebar-border);
-   --color-sidebar-ring: var(--sidebar-ring);
-
-   --font-sans: var(--font-sans);
-   --font-mono: var(--font-mono);
-   --font-serif: var(--font-serif);
-
-   --radius-sm: calc(var(--radius) - 4px);
-   --radius-md: calc(var(--radius) - 2px);
-   --radius-lg: var(--radius);
-   --radius-xl: calc(var(--radius) + 4px);
-
-   --shadow-2xs: var(--shadow-2xs);
-   --shadow-xs: var(--shadow-xs);
-   --shadow-sm: var(--shadow-sm);
-   --shadow: var(--shadow);
-   --shadow-md: var(--shadow-md);
-   --shadow-lg: var(--shadow-lg);
-   --shadow-xl: var(--shadow-xl);
-   --shadow-2xl: var(--shadow-2xl);
-   }
+/* Primary Colors */
+--primary: #1b365d (dark blue)
+--background: #fcfcfc (off-white)
+--accent: #ebebeb (light gray - for hover backgrounds)
+--accent-foreground: #ff6b35 (vibrant orange - for emphasis/highlights)
 ```
+
+### Accent Color Implementation Strategy
+**Essential Usage Patterns:**
+- **Hover States**: Use `hover:bg-accent hover:text-accent-foreground` 
+- **Emphasis Elements**: Trend arrows, monetary values, timestamps use `text-accent-foreground`
+- **Interactive Feedback**: Cards and buttons should have accent hover effects
+- **Status Indicators**: Important metrics and positive changes use orange accent
+- **Navigation**: Active and hover states in sidebar navigation
+
+### CSS Variable Configuration
+**In index.css**: Use direct CSS values (not HSL)
+**In tailwind.config.ts**: Reference with `var(--variable-name)` (not hsl wrapper)
+
+```typescript
+// CORRECT
+colors: {
+  accent: 'var(--accent)',
+  'accent-foreground': 'var(--accent-foreground)'
+}
+
+// INCORRECT  
+colors: {
+  accent: 'hsl(var(--accent))'
+}
+```
+
+## 📱 Mobile-First Responsive Design
+
+### Core Responsive Principles
+1. **Mobile-First Approach**: Design for mobile, enhance for desktop
+2. **Progressive Enhancement**: Add features as screen size increases
+3. **Touch-Friendly**: Adequate tap targets and spacing
+4. **Content Priority**: Most important content accessible on smallest screens
+
+### Responsive Patterns Used
+```css
+/* Spacing */
+p-4 md:p-6           /* Smaller padding on mobile */
+space-y-4 md:space-y-6   /* Reduced spacing on mobile */
+gap-3 sm:gap-4       /* Smaller gaps on mobile */
+
+/* Typography */
+text-2xl md:text-3xl     /* Responsive font scaling */
+text-lg md:text-xl       /* Subtitle scaling */
+
+/* Layout */
+grid-cols-1 sm:grid-cols-2 lg:grid-cols-4  /* Progressive grid */
+flex-col sm:flex-row     /* Stack on mobile, row on desktop */
+w-full sm:w-auto         /* Full width buttons on mobile */
+
+/* Content Management */
+truncate                 /* Prevent text overflow */
+flex-shrink-0           /* Prevent icon shrinking */
+min-w-0                 /* Allow flex items to shrink */
+line-clamp-2            /* Limit text lines */
+```
+
+### Grid System Strategy
+- **Mobile (default)**: Single column layout
+- **Small (sm: 640px+)**: 2 columns where appropriate
+- **Medium (md: 768px+)**: 2-3 columns, introduce horizontal layouts
+- **Large (lg: 1024px+)**: Full multi-column layouts, sidebar becomes persistent
+
+### Component Organization Standards
+- **Single Responsibility**: Each component has one clear purpose
+- **Composition**: Build complex UIs from simple, reusable parts
+- **Props Interface**: Define clear prop interfaces for reusability
+- **Mobile Considerations**: Every component must work on mobile
+
+## 🎯 UI Design System Standards
+
+### Color Usage Hierarchy
+1. **Primary**: Main actions, navigation active states
+2. **Accent**: Hover backgrounds, secondary actions
+3. **Accent-Foreground**: Emphasis, highlights, positive trends
+4. **Muted**: Subtle text, less important information
+5. **Destructive**: Errors, warnings, negative actions
+
+### Typography Scale
+- **Headings**: Responsive scaling with md: breakpoints
+- **Body Text**: Consistent line heights and spacing
+- **Labels**: Appropriate sizing for form elements
+- **Captions**: Muted colors for secondary information
+
+### Interaction Design
+- **Hover States**: Subtle accent background with orange text
+- **Active States**: Primary color with appropriate contrast
+- **Focus States**: Ring color using theme ring variable
+- **Loading States**: Skeleton components using muted colors
+
+## 🚀 UI Development Workflow
+
+### Setup Requirements
+1. Use provided custom theme CSS variables exactly as specified
+2. Configure Tailwind to use direct CSS variable references
+3. Implement mobile-first responsive design from day one
+4. Test on multiple screen sizes throughout development
+
+### Quality Checklist
+- [ ] Mobile responsiveness verified on all components
+- [ ] Accent colors properly implemented in hover states
+- [ ] Navigation works correctly with React Router
+- [ ] All forms are touch-friendly on mobile
+- [ ] Text truncation handles long content gracefully
+- [ ] Loading states and interactions feel responsive
+- [ ] Theme colors used consistently throughout
+
+### Performance Considerations
+- Minimize CSS bundle size by using theme variables
+- Lazy load non-critical components where appropriate
+- Optimize images and assets for mobile connections
+- Ensure smooth animations and transitions
+
+## 🔧 Maintenance & Extension
+
+### Adding New Components
+1. Follow mobile-first responsive patterns
+2. Implement accent color hover states
+3. Use semantic theme color tokens
+4. Test across all breakpoints
+5. Document any new patterns established
+
+### Theme Customization
+- Never override with hardcoded colors
+- Test changes across all breakpoints
+- Maintain accessibility contrast ratios
+
+
 
 ## Database Schema
 
@@ -894,6 +923,186 @@ To fully implement analytics:
 - Don't track sensitive user data
 - Use server-side tracking for critical events
 - Client-side tracking for UI interactions
+
+## Feature Implementation Workflow from React Examples
+
+When implementing new features from React code examples (typically provided in docs/*.md files), follow this systematic workflow:
+
+### Step 1: Analyze the Feature Request
+1. **Read the markdown file** in the docs folder containing the feature description
+2. **Examine the React code** to understand:
+   - Component structure and hierarchy
+   - State management requirements
+   - Data flow and props
+   - UI/UX interactions
+   - Dependencies and imports
+
+### Step 2: Plan the Implementation
+Use the TodoWrite tool to create a task list:
+```
+1. Explore app structure to find proper location for the feature
+2. Create main page/component using Server Components pattern
+3. Implement client-side interactivity if needed
+4. Add any missing UI components to the shared UI package
+5. Add route to navigation if applicable
+```
+
+### Step 3: Determine Component Architecture
+**Decision tree for each component:**
+- **Server Component** (default): For data fetching, static content, layouts
+- **Client Component**: Only when needed for:
+  - useState, useEffect, or other React hooks
+  - Event handlers (onClick, onChange, etc.)
+  - Browser-only APIs
+  - Third-party client libraries
+
+### Step 4: Adapt the Code to Project Standards
+
+#### 4.1 Import Conversions
+```typescript
+// Original React imports
+import { Button } from "@/components/ui/button"
+import { useState } from "react"
+
+// Convert to project imports
+import { Button } from "@v1/ui/button"  // Use monorepo package
+import { useState } from "react"         // Keep React imports as-is
+```
+
+#### 4.2 Server/Client Split Pattern
+```typescript
+// Server Component (page.tsx)
+export default async function FeaturePage({ searchParams }) {
+  // Server-side data processing
+  const data = processData(searchParams);
+  
+  return <ClientComponent initialData={data} />;
+}
+
+// Client Component (feature-client.tsx)
+"use client";
+export function ClientComponent({ initialData }) {
+  const [state, setState] = useState(initialData);
+  // Interactive logic here
+}
+```
+
+#### 4.3 State Management via URL
+For filters, search, and pagination, use URL state instead of React state:
+```typescript
+// Use searchParams in Server Components
+const { search, filter } = searchParams;
+
+// Use router.push() in Client Components for updates
+const updateFilters = (newFilters) => {
+  const params = new URLSearchParams(searchParams);
+  params.set("filter", newFilters);
+  router.push(`?${params.toString()}`);
+};
+```
+
+### Step 5: Handle Missing Dependencies
+
+#### 5.1 Missing UI Components
+If shadcn/ui components don't exist in `@v1/ui`:
+1. Create the component file in `packages/ui/src/components/`
+2. Add proper imports and types
+3. Export in `packages/ui/package.json`
+4. Run `bun install` after adding new dependencies
+
+#### 5.2 Component Creation Template
+```typescript
+// packages/ui/src/components/[component].tsx
+import { type VariantProps, cva } from "class-variance-authority";
+import * as React from "react";
+import { cn } from "../utils/cn";
+
+// Add "use client" only if component needs client features
+"use client"; 
+
+export function Component({ className, ...props }: ComponentProps) {
+  return <div className={cn("base-classes", className)} {...props} />;
+}
+```
+
+### Step 6: File Structure and Naming
+
+Place files according to feature type:
+```
+apps/app/src/app/[locale]/(dashboard)/
+├── feature-name/
+│   ├── page.tsx                 # Server Component (main page)
+│   ├── feature-filters.tsx      # Client Component (if needed)
+│   └── feature-actions.ts       # Server Actions (if needed)
+```
+
+### Step 7: Data and Mutations
+
+For data mutations, always use Server Actions:
+```typescript
+// feature-actions.ts
+"use server";
+import { authActionClient } from "@/actions/safe-action";
+
+export const featureAction = authActionClient
+  .schema(z.object({ id: z.string() }))
+  .action(async ({ parsedInput, ctx }) => {
+    // Mutation logic
+  });
+```
+
+### Step 8: Testing and Validation
+
+Run these commands after implementation:
+```bash
+bun typecheck    # Check TypeScript types
+bun lint         # Run linter
+bun format       # Format code
+bun dev          # Test in development
+```
+
+### Step 9: Common Gotchas and Solutions
+
+1. **Array index as key**: Use unique identifiers
+   ```typescript
+   // Bad: key={index}
+   // Good: key={`${item.id}-${index}`}
+   ```
+
+2. **Import paths**: Always use monorepo packages
+   ```typescript
+   // Bad: import from "@/components/ui/..."
+   // Good: import from "@v1/ui/..."
+   ```
+
+3. **Missing components**: Check `packages/ui/src/components/` first
+
+4. **Client/Server boundary**: Add "use client" directive when needed
+
+5. **Type errors**: Ensure proper TypeScript types for all props
+
+### Step 10: Complete the Implementation
+
+1. Mark all todos as completed using TodoWrite
+2. Ensure no TypeScript or linting errors
+3. Verify mobile responsiveness
+4. Test all interactive features
+5. Document any special considerations
+
+### Example Implementation Summary
+
+When given a React component in a markdown file:
+1. **Analyze** the component structure and requirements
+2. **Plan** with TodoWrite tool
+3. **Create** the page as a Server Component by default
+4. **Extract** interactive parts into Client Components
+5. **Adapt** imports to use `@v1/ui` packages
+6. **Add** any missing UI components to the shared package
+7. **Handle** data fetching server-side, mutations with Server Actions
+8. **Test** with typecheck and lint commands
+9. **Complete** all todos and verify functionality
+
+This workflow ensures consistent, maintainable implementations that follow project standards while preserving the original functionality from the React examples.
 
 ## Project Best Practices
 

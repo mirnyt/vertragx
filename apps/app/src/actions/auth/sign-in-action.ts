@@ -12,8 +12,8 @@ export const signInAction = actionClientWithMeta
     name: "sign-in",
     track: {
       event: "user_signed_in",
-      channel: "auth"
-    }
+      channel: "auth",
+    },
   })
   .action(async ({ parsedInput: { email, password } }) => {
     const supabase = createClient();

@@ -14,17 +14,17 @@ export async function GET(request: Request) {
     const errorMessage = error_description || "Authentication failed";
     const authError = mapSupabaseError(errorMessage);
     return NextResponse.redirect(
-      `${origin}/login?error=${encodeURIComponent(authError.message)}`
+      `${origin}/login?error=${encodeURIComponent(authError.message)}`,
     );
   }
 
   // Handle code exchange
   if (code) {
     const supabase = createClient();
-    
+
     try {
       const { error } = await supabase.auth.exchangeCodeForSession(code);
-      
+
       if (!error) {
         // Success - redirect to intended destination
         const forwardedHost = request.headers.get("x-forwarded-host");
@@ -41,20 +41,20 @@ export async function GET(request: Request) {
         // Handle exchange error
         const authError = mapSupabaseError(error.message);
         return NextResponse.redirect(
-          `${origin}/login?error=${encodeURIComponent(authError.message)}`
+          `${origin}/login?error=${encodeURIComponent(authError.message)}`,
         );
       }
     } catch (err) {
       // Handle unexpected errors
       console.error("Auth callback error:", err);
       return NextResponse.redirect(
-        `${origin}/login?error=${encodeURIComponent("An unexpected error occurred during authentication")}`
+        `${origin}/login?error=${encodeURIComponent("An unexpected error occurred during authentication")}`,
       );
     }
   }
 
   // Missing code parameter
   return NextResponse.redirect(
-    `${origin}/login?error=${encodeURIComponent("Invalid authentication request")}`
+    `${origin}/login?error=${encodeURIComponent("Invalid authentication request")}`,
   );
 }
