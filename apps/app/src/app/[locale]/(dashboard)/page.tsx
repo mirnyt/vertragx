@@ -12,13 +12,19 @@ export default async function Page() {
   const t = await getI18n();
 
   return (
-    <div className="h-screen w-screen flex flex-col items-center justify-center">
-      <div className="flex flex-col items-center justify-center gap-8">
-        <p>{t("welcome", { name: data?.user?.email })}</p>
+    <div className="p-4 md:p-6 space-y-6">
+      <div className="max-w-4xl mx-auto">
+        <div className="space-y-8">
+          <div className="text-center space-y-4">
+            <h1 className="text-2xl md:text-3xl font-bold">Dashboard</h1>
+            <p className="text-muted-foreground">{t("welcome", { name: data?.user?.email })}</p>
+          </div>
 
-        <Calculator />
-
-        <SignOut />
+          <div className="flex flex-col items-center gap-8">
+            <Calculator />
+            <SignOut />
+          </div>
+        </div>
       </div>
     </div>
   );
