@@ -10,8 +10,10 @@ interface SearchResultsPageProps {
   };
 }
 
-export default async function SearchResultsPage({ searchParams }: SearchResultsPageProps) {
-  const searchQuery = searchParams.q || 'temperature data logger';
-  
+export default async function SearchResultsPage({
+  searchParams,
+}: SearchResultsPageProps) {
+  const searchQuery = searchParams.q || "temperature data logger";
+
   return <SearchResultsClient searchQuery={searchQuery} />;
 }

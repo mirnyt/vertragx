@@ -1,23 +1,25 @@
 "use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { Search as SearchIcon } from 'lucide-react';
-import { Button } from '@v1/ui/button';
-import { Input } from '@v1/ui/input';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Search as SearchIcon } from "lucide-react";
+import { Button } from "@v1/ui/button";
+import { Input } from "@v1/ui/input";
 
 export function SearchClient() {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
 
   const handleSearch = () => {
     if (searchQuery.trim()) {
-      router.push(`/search-results?q=${encodeURIComponent(searchQuery.trim())}`);
+      router.push(
+        `/search-results?q=${encodeURIComponent(searchQuery.trim())}`,
+      );
     }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       handleSearch();
     }
   };
@@ -58,7 +60,8 @@ export function SearchClient() {
                   onKeyPress={handleKeyPress}
                   className="relative w-full h-16 sm:h-20 md:h-24 text-lg sm:text-xl md:text-2xl font-medium px-8 sm:px-10 md:px-12 pr-20 border-2 border-accent bg-background/95 backdrop-blur-md rounded-2xl focus:border-accent-foreground focus:ring-4 focus:ring-accent-foreground/30 transition-all duration-300 shadow-2xl focus:shadow-accent/30 placeholder:text-muted-foreground/60 placeholder:font-semibold"
                   style={{
-                    boxShadow: '0 12px 48px -12px rgba(255, 107, 53, 0.18), 0 0 0 2px rgba(255, 107, 53, 0.10)'
+                    boxShadow:
+                      "0 12px 48px -12px rgba(255, 107, 53, 0.18), 0 0 0 2px rgba(255, 107, 53, 0.10)",
                   }}
                 />
                 {/* Animated search button */}
@@ -66,7 +69,7 @@ export function SearchClient() {
                   onClick={handleSearch}
                   size="icon"
                   className="absolute right-4 sm:right-6 top-1/2 transform -translate-y-1/2 h-14 w-14 sm:h-16 sm:w-16 bg-primary hover:bg-primary/90 text-primary-foreground rounded-full shadow-lg hover:scale-105 active:scale-95 transition-all duration-200 flex items-center justify-center border-4 border-background focus:ring-2 focus:ring-primary/40"
-                  style={{ boxShadow: '0 4px 24px 0 rgba(27, 54, 93, 0.10)' }}
+                  style={{ boxShadow: "0 4px 24px 0 rgba(27, 54, 93, 0.10)" }}
                 >
                   <SearchIcon className="h-7 w-7 sm:h-8 sm:w-8" />
                 </Button>

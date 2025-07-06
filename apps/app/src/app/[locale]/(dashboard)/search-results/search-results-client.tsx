@@ -1,239 +1,274 @@
 "use client";
 
-import { useState } from 'react';
-import { Send, Heart, Star, Filter, ChevronDown, MessageCircle, X, Search, TrendingUp, Building2, Target, Users } from 'lucide-react';
-import { Button } from '@v1/ui/button';
-import { Input } from '@v1/ui/input';
-import { Badge } from '@v1/ui/badge';
-import { Card, CardContent } from '@v1/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@v1/ui/select';
-import { Slider } from '@v1/ui/slider';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@v1/ui/sheet';
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '@v1/ui/drawer';
+import { useState } from "react";
+import {
+  Send,
+  Heart,
+  Star,
+  Filter,
+  ChevronDown,
+  MessageCircle,
+  X,
+  Search,
+  TrendingUp,
+  Building2,
+  Target,
+  Users,
+} from "lucide-react";
+import { Button } from "@v1/ui/button";
+import { Input } from "@v1/ui/input";
+import { Badge } from "@v1/ui/badge";
+import { Card, CardContent } from "@v1/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@v1/ui/select";
+import { Slider } from "@v1/ui/slider";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@v1/ui/sheet";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@v1/ui/drawer";
 
 interface SearchResultsClientProps {
   searchQuery: string;
 }
 
 export function SearchResultsClient({ searchQuery }: SearchResultsClientProps) {
-  const [chatMessage, setChatMessage] = useState('');
+  const [chatMessage, setChatMessage] = useState("");
   const [priceRange, setPriceRange] = useState([0, 2000]);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [activeFilters, setActiveFilters] = useState(['Best Selling']);
-  const [selectedSupplierType, setSelectedSupplierType] = useState('');
-  const [selectedCertifications, setSelectedCertifications] = useState<string[]>([]);
+  const [activeFilters, setActiveFilters] = useState(["Best Selling"]);
+  const [selectedSupplierType, setSelectedSupplierType] = useState("");
+  const [selectedCertifications, setSelectedCertifications] = useState<
+    string[]
+  >([]);
 
   // Mock chat messages
   const chatMessages = [
     {
-      type: 'user',
-      content: searchQuery || 'temperature data logger',
-      timestamp: '2 min ago'
+      type: "user",
+      content: searchQuery || "temperature data logger",
+      timestamp: "2 min ago",
     },
     {
-      type: 'ai',
-      content: 'I will search for sourcing options for a temperature data logger for you. Please hold on for a moment.',
-      timestamp: '2 min ago'
+      type: "ai",
+      content:
+        "I will search for sourcing options for a temperature data logger for you. Please hold on for a moment.",
+      timestamp: "2 min ago",
     },
     {
-      type: 'ai',
-      content: 'The search for temperature data loggers has been successfully completed, and the relevant products are now displayed on your interface. If you need further assistance or have any other inquiries, feel free to let me know!',
-      timestamp: '1 min ago'
-    }
+      type: "ai",
+      content:
+        "The search for temperature data loggers has been successfully completed, and the relevant products are now displayed on your interface. If you need further assistance or have any other inquiries, feel free to let me know!",
+      timestamp: "1 min ago",
+    },
   ];
 
   // Follow-up suggestions
   const followUpSuggestions = [
     {
       icon: Search,
-      text: 'Find suppliers for temperature data loggers'
+      text: "Find suppliers for temperature data loggers",
     },
     {
       icon: TrendingUp,
-      text: 'Market trends for temperature data loggers'
+      text: "Market trends for temperature data loggers",
     },
     {
       icon: Target,
-      text: 'Source high accuracy temperature data loggers'
-    }
+      text: "Source high accuracy temperature data loggers",
+    },
   ];
 
   // Mock product data
   const products = [
     {
       id: 1,
-      name: 'Cheap Cost Single Use Temperature Data Logger',
-      price: '$8.80-9',
-      minOrder: '1 piece',
-      supplier: 'Alibaba.com - Shenzhen Sigma',
+      name: "Cheap Cost Single Use Temperature Data Logger",
+      price: "$8.80-9",
+      minOrder: "1 piece",
+      supplier: "Alibaba.com - Shenzhen Sigma",
       verified: true,
-      years: '9 yrs',
+      years: "9 yrs",
       rating: 4.9,
       reviews: 134,
-      image: '/placeholder.svg',
-      badges: ['FCC', 'CE'],
-      attributes: ['High Accuracy', 'Wide Temperature Range']
+      image: "/placeholder.svg",
+      badges: ["FCC", "CE"],
+      attributes: ["High Accuracy", "Wide Temperature Range"],
     },
     {
       id: 2,
-      name: 'Multi Channel Data Logger RS485 Modbus Temperature',
-      price: '$300-340',
-      minOrder: '1 set',
-      supplier: 'Alibaba.com - Wuhu Jujie',
+      name: "Multi Channel Data Logger RS485 Modbus Temperature",
+      price: "$300-340",
+      minOrder: "1 set",
+      supplier: "Alibaba.com - Wuhu Jujie",
       verified: true,
-      years: '1 yr',
+      years: "1 yr",
       rating: 5.0,
       reviews: 118,
-      image: '/placeholder.svg',
-      badges: ['CE'],
-      attributes: ['Multi Channel', 'Modbus Interface']
+      image: "/placeholder.svg",
+      badges: ["CE"],
+      attributes: ["Multi Channel", "Modbus Interface"],
     },
     {
       id: 3,
-      name: 'Graphing Temperature and Humidity Data Logger',
-      price: '$59-85',
-      minOrder: '5 pieces',
-      supplier: 'Alibaba.com - Huato System',
+      name: "Graphing Temperature and Humidity Data Logger",
+      price: "$59-85",
+      minOrder: "5 pieces",
+      supplier: "Alibaba.com - Huato System",
       verified: false,
-      years: '12 yrs',
+      years: "12 yrs",
       rating: 3.8,
       reviews: 16,
-      image: '/placeholder.svg',
+      image: "/placeholder.svg",
       badges: [],
-      attributes: ['Graphing Display', 'Humidity Sensor']
+      attributes: ["Graphing Display", "Humidity Sensor"],
     },
     {
       id: 4,
-      name: 'Hard Probe-80- 350 Degree 10 Channel Wireless Temperature',
-      price: '$460-644',
-      minOrder: '1 unit',
-      supplier: 'Alibaba.com - Hefei Zhice',
+      name: "Hard Probe-80- 350 Degree 10 Channel Wireless Temperature",
+      price: "$460-644",
+      minOrder: "1 unit",
+      supplier: "Alibaba.com - Hefei Zhice",
       verified: false,
-      years: '2 yrs',
+      years: "2 yrs",
       rating: 0,
       reviews: 50,
-      image: '/placeholder.svg',
+      image: "/placeholder.svg",
       badges: [],
-      attributes: ['Wireless', '10 Channel', 'High Temperature']
+      attributes: ["Wireless", "10 Channel", "High Temperature"],
     },
     {
       id: 5,
-      name: 'Wireless Single Use Temperature Data Logger',
-      price: '$28-35',
-      minOrder: '5 units',
-      supplier: 'Alibaba.com - Tzone Digital',
+      name: "Wireless Single Use Temperature Data Logger",
+      price: "$28-35",
+      minOrder: "5 units",
+      supplier: "Alibaba.com - Tzone Digital",
       verified: true,
-      years: '19 yrs',
+      years: "19 yrs",
       rating: 0,
       reviews: 1329,
-      image: '/placeholder.svg',
-      badges: ['CE'],
-      attributes: ['Wireless', 'Single Use', 'Long Battery Life']
+      image: "/placeholder.svg",
+      badges: ["CE"],
+      attributes: ["Wireless", "Single Use", "Long Battery Life"],
     },
     {
       id: 6,
-      name: 'USB Interface Temperature Data Logger with LCD Display',
-      price: '$45-78',
-      minOrder: '10 pieces',
-      supplier: 'Alibaba.com - Beijing Tech',
+      name: "USB Interface Temperature Data Logger with LCD Display",
+      price: "$45-78",
+      minOrder: "10 pieces",
+      supplier: "Alibaba.com - Beijing Tech",
       verified: true,
-      years: '5 yrs',
+      years: "5 yrs",
       rating: 4.2,
       reviews: 89,
-      image: '/placeholder.svg',
-      badges: ['CE', 'RoHS'],
-      attributes: ['USB Interface', 'LCD Display', 'Data Storage']
+      image: "/placeholder.svg",
+      badges: ["CE", "RoHS"],
+      attributes: ["USB Interface", "LCD Display", "Data Storage"],
     },
     {
       id: 7,
-      name: 'Bluetooth Temperature and Humidity Logger with App',
-      price: '$125-180',
-      minOrder: '2 sets',
-      supplier: 'Alibaba.com - Guangzhou Smart',
+      name: "Bluetooth Temperature and Humidity Logger with App",
+      price: "$125-180",
+      minOrder: "2 sets",
+      supplier: "Alibaba.com - Guangzhou Smart",
       verified: true,
-      years: '3 yrs',
+      years: "3 yrs",
       rating: 4.7,
       reviews: 245,
-      image: '/placeholder.svg',
-      badges: ['FCC', 'CE'],
-      attributes: ['Bluetooth', 'Mobile App', 'Real-time Monitoring']
+      image: "/placeholder.svg",
+      badges: ["FCC", "CE"],
+      attributes: ["Bluetooth", "Mobile App", "Real-time Monitoring"],
     },
     {
       id: 8,
-      name: 'Industrial Grade Temperature Logger -40°C to 85°C',
-      price: '$89-156',
-      minOrder: '5 units',
-      supplier: 'Alibaba.com - Shanghai Industrial',
+      name: "Industrial Grade Temperature Logger -40°C to 85°C",
+      price: "$89-156",
+      minOrder: "5 units",
+      supplier: "Alibaba.com - Shanghai Industrial",
       verified: false,
-      years: '7 yrs',
+      years: "7 yrs",
       rating: 4.1,
       reviews: 67,
-      image: '/placeholder.svg',
-      badges: ['IP65'],
-      attributes: ['Industrial Grade', 'Wide Range', 'Waterproof']
+      image: "/placeholder.svg",
+      badges: ["IP65"],
+      attributes: ["Industrial Grade", "Wide Range", "Waterproof"],
     },
     {
       id: 9,
-      name: 'Portable Temperature Data Logger with PDF Report',
-      price: '$35-62',
-      minOrder: '20 pieces',
-      supplier: 'Alibaba.com - Dongguan Precision',
+      name: "Portable Temperature Data Logger with PDF Report",
+      price: "$35-62",
+      minOrder: "20 pieces",
+      supplier: "Alibaba.com - Dongguan Precision",
       verified: true,
-      years: '8 yrs',
+      years: "8 yrs",
       rating: 3.9,
       reviews: 156,
-      image: '/placeholder.svg',
-      badges: ['CE'],
-      attributes: ['PDF Export', 'Portable', 'Easy Setup']
+      image: "/placeholder.svg",
+      badges: ["CE"],
+      attributes: ["PDF Export", "Portable", "Easy Setup"],
     },
     {
       id: 10,
-      name: 'WiFi Temperature Data Logger Cloud Storage',
-      price: '$220-315',
-      minOrder: '1 unit',
-      supplier: 'Alibaba.com - Xiamen IoT',
+      name: "WiFi Temperature Data Logger Cloud Storage",
+      price: "$220-315",
+      minOrder: "1 unit",
+      supplier: "Alibaba.com - Xiamen IoT",
       verified: true,
-      years: '4 yrs',
+      years: "4 yrs",
       rating: 4.5,
       reviews: 78,
-      image: '/placeholder.svg',
-      badges: ['FCC', 'CE', 'WiFi'],
-      attributes: ['WiFi Enabled', 'Cloud Storage', 'Remote Access']
+      image: "/placeholder.svg",
+      badges: ["FCC", "CE", "WiFi"],
+      attributes: ["WiFi Enabled", "Cloud Storage", "Remote Access"],
     },
     {
       id: 11,
-      name: 'Vaccine Cold Chain Temperature Monitor',
-      price: '$95-145',
-      minOrder: '10 units',
-      supplier: 'Alibaba.com - Medical Solutions',
+      name: "Vaccine Cold Chain Temperature Monitor",
+      price: "$95-145",
+      minOrder: "10 units",
+      supplier: "Alibaba.com - Medical Solutions",
       verified: true,
-      years: '6 yrs',
+      years: "6 yrs",
       rating: 4.8,
       reviews: 134,
-      image: '/placeholder.svg',
-      badges: ['FDA', 'CE', 'WHO'],
-      attributes: ['Cold Chain', 'Medical Grade', 'Alarm System']
+      image: "/placeholder.svg",
+      badges: ["FDA", "CE", "WHO"],
+      attributes: ["Cold Chain", "Medical Grade", "Alarm System"],
     },
     {
       id: 12,
-      name: 'Solar Powered Outdoor Temperature Logger',
-      price: '$180-275',
-      minOrder: '3 pieces',
-      supplier: 'Alibaba.com - Green Energy',
+      name: "Solar Powered Outdoor Temperature Logger",
+      price: "$180-275",
+      minOrder: "3 pieces",
+      supplier: "Alibaba.com - Green Energy",
       verified: false,
-      years: '2 yrs',
+      years: "2 yrs",
       rating: 4.0,
       reviews: 45,
-      image: '/placeholder.svg',
-      badges: ['IP67'],
-      attributes: ['Solar Powered', 'Outdoor Use', 'Long Battery Life']
-    }
+      image: "/placeholder.svg",
+      badges: ["IP67"],
+      attributes: ["Solar Powered", "Outdoor Use", "Long Battery Life"],
+    },
   ];
 
   const handleSendMessage = () => {
     if (chatMessage.trim()) {
-      setChatMessage('');
+      setChatMessage("");
     }
   };
 
@@ -241,19 +276,28 @@ export function SearchResultsClient({ searchQuery }: SearchResultsClientProps) {
     <div className="h-full flex flex-col bg-card border-r border-border">
       {/* Chat Header */}
       <div className="p-4 border-b border-border bg-card">
-        <h2 className="font-semibold text-lg text-foreground">Product Search Assistant</h2>
-        <p className="text-sm text-muted-foreground">Ask me anything about products</p>
+        <h2 className="font-semibold text-lg text-foreground">
+          Product Search Assistant
+        </h2>
+        <p className="text-sm text-muted-foreground">
+          Ask me anything about products
+        </p>
       </div>
 
       {/* Chat Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {chatMessages.map((message, index) => (
-          <div key={index} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
-            <div className={`max-w-[80%] rounded-lg p-3 ${
-              message.type === 'user' 
-                ? 'bg-primary text-primary-foreground' 
-                : 'bg-muted text-muted-foreground'
-            }`}>
+          <div
+            key={index}
+            className={`flex ${message.type === "user" ? "justify-end" : "justify-start"}`}
+          >
+            <div
+              className={`max-w-[80%] rounded-lg p-3 ${
+                message.type === "user"
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-muted text-muted-foreground"
+              }`}
+            >
               <p className="text-sm">{message.content}</p>
               <p className="text-xs opacity-70 mt-1">{message.timestamp}</p>
             </div>
@@ -263,7 +307,9 @@ export function SearchResultsClient({ searchQuery }: SearchResultsClientProps) {
 
       {/* Follow-up Suggestions */}
       <div className="p-3 border-t border-border">
-        <h3 className="text-sm font-medium text-foreground mb-2">Ask follow-up...</h3>
+        <h3 className="text-sm font-medium text-foreground mb-2">
+          Ask follow-up...
+        </h3>
         <div className="space-y-1">
           {followUpSuggestions.map((suggestion, index) => (
             <button
@@ -285,7 +331,7 @@ export function SearchResultsClient({ searchQuery }: SearchResultsClientProps) {
             onChange={(e) => setChatMessage(e.target.value)}
             placeholder="Ask about products..."
             className="flex-1"
-            onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+            onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
           />
           <Button onClick={handleSendMessage} size="icon">
             <Send className="h-4 w-4" />
@@ -302,7 +348,10 @@ export function SearchResultsClient({ searchQuery }: SearchResultsClientProps) {
           <Filter className="h-4 w-4 mr-2" />
           Filters
           {activeFilters.length > 0 && (
-            <Badge variant="secondary" className="ml-2 h-5 px-1.5 text-xs bg-accent-foreground text-white">
+            <Badge
+              variant="secondary"
+              className="ml-2 h-5 px-1.5 text-xs bg-accent-foreground text-white"
+            >
               {activeFilters.length}
             </Badge>
           )}
@@ -312,7 +361,7 @@ export function SearchResultsClient({ searchQuery }: SearchResultsClientProps) {
         <DrawerHeader className="border-b border-border">
           <DrawerTitle>Filter Products</DrawerTitle>
         </DrawerHeader>
-        
+
         <div className="p-6 overflow-y-auto">
           {/* Active Filters */}
           {activeFilters.length > 0 && (
@@ -320,7 +369,11 @@ export function SearchResultsClient({ searchQuery }: SearchResultsClientProps) {
               <h3 className="text-sm font-medium mb-3">Active Filters</h3>
               <div className="flex flex-wrap gap-2">
                 {activeFilters.map((filter, index) => (
-                  <Badge key={index} variant="secondary" className="bg-accent text-accent-foreground">
+                  <Badge
+                    key={index}
+                    variant="secondary"
+                    className="bg-accent text-accent-foreground"
+                  >
                     {filter} <X className="ml-1 h-3 w-3" />
                   </Badge>
                 ))}
@@ -352,7 +405,10 @@ export function SearchResultsClient({ searchQuery }: SearchResultsClientProps) {
           {/* Supplier Type */}
           <div className="mb-6">
             <h3 className="text-sm font-medium mb-3">Supplier Type</h3>
-            <Select value={selectedSupplierType} onValueChange={setSelectedSupplierType}>
+            <Select
+              value={selectedSupplierType}
+              onValueChange={setSelectedSupplierType}
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Select supplier type" />
               </SelectTrigger>
@@ -368,11 +424,18 @@ export function SearchResultsClient({ searchQuery }: SearchResultsClientProps) {
           <div className="mb-6">
             <h3 className="text-sm font-medium mb-3">Certifications</h3>
             <div className="grid grid-cols-2 gap-2">
-              {['CE', 'FCC', 'RoHS', 'FDA', 'WHO', 'IP65', 'IP67', 'WiFi'].map((cert) => (
-                <Button key={cert} variant="outline" size="sm" className="justify-start">
-                  {cert}
-                </Button>
-              ))}
+              {["CE", "FCC", "RoHS", "FDA", "WHO", "IP65", "IP67", "WiFi"].map(
+                (cert) => (
+                  <Button
+                    key={cert}
+                    variant="outline"
+                    size="sm"
+                    className="justify-start"
+                  >
+                    {cert}
+                  </Button>
+                ),
+              )}
             </div>
           </div>
 
@@ -380,8 +443,20 @@ export function SearchResultsClient({ searchQuery }: SearchResultsClientProps) {
           <div className="mb-6">
             <h3 className="text-sm font-medium mb-3">Features</h3>
             <div className="space-y-2">
-              {['High Accuracy', 'Wide Temperature Range', 'Long Battery Life', 'Wireless', 'Multi Channel', 'Waterproof'].map((feature) => (
-                <Button key={feature} variant="ghost" size="sm" className="justify-start w-full">
+              {[
+                "High Accuracy",
+                "Wide Temperature Range",
+                "Long Battery Life",
+                "Wireless",
+                "Multi Channel",
+                "Waterproof",
+              ].map((feature) => (
+                <Button
+                  key={feature}
+                  variant="ghost"
+                  size="sm"
+                  className="justify-start w-full"
+                >
                   {feature}
                 </Button>
               ))}
@@ -397,7 +472,11 @@ export function SearchResultsClient({ searchQuery }: SearchResultsClientProps) {
 
         <div className="p-4 border-t border-border bg-card">
           <div className="flex gap-3">
-            <Button variant="outline" className="flex-1" onClick={() => setIsFilterOpen(false)}>
+            <Button
+              variant="outline"
+              className="flex-1"
+              onClick={() => setIsFilterOpen(false)}
+            >
               Clear All
             </Button>
             <Button className="flex-1" onClick={() => setIsFilterOpen(false)}>
@@ -415,12 +494,22 @@ export function SearchResultsClient({ searchQuery }: SearchResultsClientProps) {
       <div className="sticky top-0 bg-background border-b border-border p-4 sm:p-6 z-10">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="flex-1">
-            <h1 className="text-2xl font-bold text-foreground">{searchQuery || 'temperature data logger'}</h1>
+            <h1 className="text-2xl font-bold text-foreground">
+              {searchQuery || "temperature data logger"}
+            </h1>
             <p className="text-muted-foreground mt-1">
-              Results from <span className="font-semibold text-accent-foreground">61,000+</span> products and <span className="font-semibold text-accent-foreground">3,600+</span> suppliers
+              Results from{" "}
+              <span className="font-semibold text-accent-foreground">
+                61,000+
+              </span>{" "}
+              products and{" "}
+              <span className="font-semibold text-accent-foreground">
+                3,600+
+              </span>{" "}
+              suppliers
             </p>
           </div>
-          
+
           <div className="flex items-center gap-3">
             {/* Mobile Chat Toggle */}
             <div className="sm:hidden">
@@ -451,7 +540,11 @@ export function SearchResultsClient({ searchQuery }: SearchResultsClientProps) {
         {activeFilters.length > 0 && (
           <div className="mt-4 flex flex-wrap gap-2">
             {activeFilters.map((filter, index) => (
-              <Badge key={index} variant="secondary" className="bg-accent text-accent-foreground">
+              <Badge
+                key={index}
+                variant="secondary"
+                className="bg-accent text-accent-foreground"
+              >
                 {filter} <X className="ml-1 h-3 w-3" />
               </Badge>
             ))}
@@ -470,11 +563,18 @@ export function SearchResultsClient({ searchQuery }: SearchResultsClientProps) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {products.map((product) => (
-            <Card key={product.id} className="group hover:shadow-lg transition-all duration-200 hover:bg-accent/5 border-border">
+            <Card
+              key={product.id}
+              className="group hover:shadow-lg transition-all duration-200 hover:bg-accent/5 border-border"
+            >
               <CardContent className="p-0">
                 {/* Product Image */}
                 <div className="relative aspect-square bg-muted rounded-t-lg overflow-hidden">
-                  <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-full h-full object-cover"
+                  />
                   <Button
                     variant="ghost"
                     size="icon"
@@ -485,7 +585,11 @@ export function SearchResultsClient({ searchQuery }: SearchResultsClientProps) {
                   {product.badges.length > 0 && (
                     <div className="absolute bottom-3 left-3 flex gap-1">
                       {product.badges.slice(0, 2).map((badge) => (
-                        <Badge key={badge} variant="secondary" className="text-xs bg-background/90 text-foreground">
+                        <Badge
+                          key={badge}
+                          variant="secondary"
+                          className="text-xs bg-background/90 text-foreground"
+                        >
                           {badge}
                         </Badge>
                       ))}
@@ -519,10 +623,13 @@ export function SearchResultsClient({ searchQuery }: SearchResultsClientProps) {
                   <div className="space-y-1">
                     <div className="flex items-center justify-between">
                       <span className="text-xs text-muted-foreground truncate">
-                        {product.supplier.split(' - ')[1] || product.supplier}
+                        {product.supplier.split(" - ")[1] || product.supplier}
                       </span>
                       {product.verified && (
-                        <Badge variant="outline" className="text-xs px-1.5 py-0">
+                        <Badge
+                          variant="outline"
+                          className="text-xs px-1.5 py-0"
+                        >
                           ✓
                         </Badge>
                       )}
@@ -536,7 +643,11 @@ export function SearchResultsClient({ searchQuery }: SearchResultsClientProps) {
                   {/* Key Features */}
                   <div className="flex flex-wrap gap-1">
                     {product.attributes.slice(0, 2).map((attr) => (
-                      <Badge key={attr} variant="outline" className="text-xs px-2 py-0.5 text-muted-foreground">
+                      <Badge
+                        key={attr}
+                        variant="outline"
+                        className="text-xs px-2 py-0.5 text-muted-foreground"
+                      >
                         {attr}
                       </Badge>
                     ))}
@@ -549,7 +660,11 @@ export function SearchResultsClient({ searchQuery }: SearchResultsClientProps) {
 
         {/* Load More */}
         <div className="mt-12 text-center">
-          <Button variant="outline" size="lg" className="hover:bg-accent hover:text-accent-foreground">
+          <Button
+            variant="outline"
+            size="lg"
+            className="hover:bg-accent hover:text-accent-foreground"
+          >
             Load more products
           </Button>
         </div>

@@ -52,10 +52,10 @@
         }
       ]
     }
- ],
+  ],
   "related_applications": [],
   "prefer_related_applications": false,
   "edge_side_panel": {
     "preferred_width": 400
   }
-} 
+}
