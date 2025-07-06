@@ -17,9 +17,14 @@ import {
   FileText,
   History,
   Heart,
+  LogOut,
 } from "lucide-react";
 import { Button } from "@v1/ui/button";
 import { cn } from "@v1/ui/cn";
+import { createClient } from "@v1/supabase/client";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import type { User } from "@supabase/supabase-js";
 
 const navigationItems = [
   { title: "Search", url: "/", icon: Search },
@@ -40,12 +45,42 @@ interface SidebarProps {
 export function Sidebar({ className }: SidebarProps) {
   const { sidebarOpen, setSidebarOpen } = useSidebar();
   const pathname = usePathname();
+  const router = useRouter();
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const supabase = createClient();
+    
+    // Get initial user
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setUser(user);
+    });
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setUser(session?.user || null);
+      }
+    );
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const isActive = (url: string) => {
     if (url === "/") {
       return pathname === "/";
     }
     return pathname.startsWith(url);
+  };
+
+  const handleSignOut = async () => {
+    try {
+      const supabase = createClient();
+      await supabase.auth.signOut();
+      router.push("/login");
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
   };
 
   return (
@@ -134,6 +169,17 @@ export function Sidebar({ className }: SidebarProps) {
               <span className="text-center leading-tight">{item.title}</span>
             </Link>
           ))}
+          
+          {/* Sign Out Button - Only show if user is authenticated */}
+          {user && (
+            <button
+              onClick={handleSignOut}
+              className="flex flex-col items-center gap-1 px-2 py-3 text-xs font-medium transition-all duration-200 rounded-lg group min-h-11 text-muted-foreground hover:bg-accent/50 hover:text-foreground w-full"
+            >
+              <LogOut className="h-5 w-5 flex-shrink-0" />
+              <span className="text-center leading-tight">Logout</span>
+            </button>
+          )}
         </div>
       </aside>
     </>
