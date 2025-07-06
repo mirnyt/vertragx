@@ -14,7 +14,9 @@ import {
   Radio,
   Zap,
   Menu,
-  FileText
+  FileText,
+  History,
+  Heart
 } from "lucide-react";
 import { Button } from "@v1/ui/button";
 import { Avatar, AvatarFallback } from "@v1/ui/avatar";
@@ -22,11 +24,10 @@ import { Badge } from "@v1/ui/badge";
 import { cn } from "@v1/ui/cn";
 
 const navigationItems = [
-  { title: "Dashboard", url: "/", icon: LayoutGrid },
-  { title: "Posts", url: "/posts", icon: Database },
-  { title: "Changelog", url: "/changelog", icon: FileText },
-  { title: "Analytics", url: "/analytics", icon: TrendingUp },
   { title: "Search", url: "/search", icon: Search },
+  { title: "History", url: "/history", icon: History },
+  { title: "Favorites", url: "/favorites", icon: Heart },
+  { title: "Changelog", url: "/changelog", icon: FileText },  
 ];
 
 const bottomNavigationItems = [
