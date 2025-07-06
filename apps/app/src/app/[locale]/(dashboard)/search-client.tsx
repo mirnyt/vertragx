@@ -48,13 +48,12 @@ export function SearchClient() {
         <div className="w-full flex items-center justify-center">
           <div className="relative w-full max-w-md sm:max-w-xl md:max-w-3xl lg:max-w-4xl">
             <div className="relative group">
-              {/* Impactful glow and border */}
-              <div className="absolute -inset-3 sm:-inset-4 bg-gradient-to-r from-accent-foreground/20 via-accent-foreground/10 to-accent-foreground/20 rounded-2xl blur-xl opacity-30 group-hover:opacity-50 group-focus-within:opacity-60 transition-all duration-500" />
-              <div className="absolute -inset-1.5 bg-gradient-to-r from-accent/30 to-accent/30 rounded-xl opacity-20 blur" />
+              {/* Soft gradient glow below search bar */}
+              <div className="absolute -inset-x-2 top-2 bottom-[-20px] bg-gradient-to-b from-accent-foreground/5 via-accent-foreground/10 to-accent-foreground/20 rounded-2xl blur-lg opacity-40 group-hover:opacity-60 group-focus-within:opacity-70 transition-all duration-500" />
               <div className="relative">
                 <Input
                   type="text"
-                  placeholder="Describe your needs in detail..."
+                  placeholder="Describe your procurement needs..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyPress={handleKeyPress}
