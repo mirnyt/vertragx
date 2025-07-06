@@ -18,7 +18,12 @@ export async function middleware(request: NextRequest) {
     request.nextUrl.pathname.endsWith("/login") ||
     request.nextUrl.pathname.endsWith("/signup") ||
     request.nextUrl.pathname.endsWith("/forgot-password") ||
-    request.nextUrl.pathname.endsWith("/reset-password");
+    request.nextUrl.pathname.endsWith("/reset-password") ||
+    request.nextUrl.pathname.endsWith("/") ||
+    request.nextUrl.pathname.endsWith("/search-results") ||
+    request.nextUrl.pathname.endsWith("/search") ||
+    request.nextUrl.pathname.endsWith("/changelog")
+    
 
   if (!isAuthRoute && !user) {
     return NextResponse.redirect(new URL("/login", request.url));

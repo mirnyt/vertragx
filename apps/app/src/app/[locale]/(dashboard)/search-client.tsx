@@ -24,6 +24,12 @@ export function SearchClient() {
     }
   };
 
+  const handleFocus = () => {
+    if (searchQuery === "") {
+      setSearchQuery("temperature data logger");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-start pt-[20vh] px-3 sm:px-4 md:px-6 lg:px-8">
       <div className="w-full max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-4xl mx-auto text-center space-y-4 sm:space-y-5 md:space-y-6">
@@ -57,6 +63,7 @@ export function SearchClient() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyPress={handleKeyPress}
+                  onFocus={handleFocus}
                   className="relative w-full h-16 sm:h-20 md:h-24 text-lg sm:text-xl md:text-2xl font-medium px-8 sm:px-10 md:px-12 pr-20 border-2 border-accent bg-background/95 backdrop-blur-md rounded-2xl focus:border-accent-foreground focus:ring-4 focus:ring-accent-foreground/30 transition-all duration-300 shadow-2xl focus:shadow-accent/30 placeholder:text-muted-foreground/60 placeholder:font-semibold"
                   style={{
                     boxShadow:
