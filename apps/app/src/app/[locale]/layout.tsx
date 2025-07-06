@@ -24,16 +24,16 @@ export const metadata: Metadata = {
     canonical: "https://app.vertragx.com",
   },
   icons: {
-    icon: "https://app.vertragx.com/logo-icon.png",
+    icon: "/logo-icon.png",
   },
-  manifest: "https://app.vertragx.com/manifest.json",
+  manifest: "/manifest.json",
   openGraph: {
     type: "website",
     url: "https://app.vertragx.com",
     title: "VertragX",
     description: "AI-Assisted Industrial Sourcing | Launch 2025",
     siteName: "VertragX",
-    images: "https://app.vertragx.com/og-image.png",
+    images: "/og-image.png",
   },
   twitter: {
     card: "summary_large_image",
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     description: "AI-Assisted Industrial Sourcing | Launch 2025",
     images: [
       {
-        url: "https://app.vertragx.com/og-image.png",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
       },
