@@ -7,55 +7,48 @@ import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://app.vertragx.com"),
   title: "VertragX",
   description: "AI-Assisted Industrial Sourcing | Launch 2025",
-  icons: {
-    icon: "/favicon.ico",
+  applicationName: "VertragX",
+  authors: [{ name: "VertragX Team", url: "https://app.vertragx.com" }],
+  generator: "Next.js",
+  keywords: ["AI", "Industrial Sourcing", "B2B", "Sourcing", "AI-Assisted"],
+  creator: "VertragX Team",
+  publisher: "VertragX",
+  robots: {
+    index: true,
+    follow: true,
   },
+  alternates: {
+    canonical: "https://app.vertragx.com",
+  },
+  icons: {
+    icon: "https://app.vertragx.com/logo-icon.png",
+  },
+  manifest: "https://app.vertragx.com/manifest.json",
   openGraph: {
-    images: "/og-image.png",
+    type: "website",
+    url: "https://app.vertragx.com",
+    title: "VertragX",
+    description: "AI-Assisted Industrial Sourcing | Launch 2025",
+    siteName: "VertragX",
+    images: "https://app.vertragx.com/og-image.png",
   },
   twitter: {
     card: "summary_large_image",
+    site: "@vertragx",
+    creator: "@vertragx",
     title: "VertragX",
     description: "AI-Assisted Industrial Sourcing | Launch 2025",
-    images: "/og-image.png",
+    images: [
+      {
+        url: "https://app.vertragx.com/og-image.png",
+        width: 1200,
+        height: 630,
+      },
+    ],
   },
-  // metadataBase: new URL("https://vertragx.com"),
-  // alternates: {
-  //   canonical: "https://vertragx.com",
-  // },
-  // viewport: {
-  //   width: "device-width",
-  //   initialScale: 1,
-  //   maximumScale: 1,
-  //   userScalable: false,
-  // },
-  // robots: {
-  //   index: true,
-  //   follow: true,
-  // },
-  // manifest: "/manifest.json",
-  // authors: [{ name: "VertragX", url: "https://vertragx.com" }],
-  // creator: "VertragX",
-  // publisher: "VertragX",
-  // category: "technology",
-  // keywords: ["AI", "Industrial Sourcing", "B2B", "Sourcing", "AI-Assisted"],
-  // applicationName: "VertragX",
-  // appleWebApp: {
-  //   title: "VertragX",
-  //   statusBarStyle: "black-translucent",
-  // },
-  // formatDetection: {
-  //   email: false,
-  //   address: false,
-  // },
-  // verification: {
-  //   google: "google-site-verification=1234567890",
-  // },
-  // other: {
-  //   "google-site-verification": "1234567890",
-  // },
 };
 
 export const viewport = {

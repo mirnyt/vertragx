@@ -83,7 +83,7 @@ export function Sidebar({ className }: SidebarProps) {
           {/* VertragX Logo */}
           <div className="w-10 h-10 rounded-full bg-gradient-to-br from-accent-foreground to-primary flex items-center justify-center shadow-sm overflow-hidden">
             <Image 
-              src="/logoicon.png" 
+              src="/logo-icon.png" 
               alt="VertragX Logo" 
               width={40} 
               height={40} 
