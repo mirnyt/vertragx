@@ -1,17 +1,18 @@
 "use client";
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Search as SearchIcon } from 'lucide-react';
 import { Button } from '@v1/ui/button';
 import { Input } from '@v1/ui/input';
 
 export function SearchClient() {
   const [searchQuery, setSearchQuery] = useState('');
+  const router = useRouter();
 
   const handleSearch = () => {
     if (searchQuery.trim()) {
-      console.log('Searching for:', searchQuery);
-      // Add search functionality here
+      router.push(`/search-results?q=${encodeURIComponent(searchQuery.trim())}`);
     }
   };
 
