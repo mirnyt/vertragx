@@ -24,59 +24,92 @@ interface ChangelogEntry {
 const changelogData: ChangelogEntry[] = [
   {
     id: "1",
-    date: "June 18, 2025",
-    title: "New pricing: lower entry points, fewer limits, more features",
+    date: "July 6, 2025",
+    title: "User Authentication and Search Enhancements",
     description:
-      "We've updated our pricing to make it easier to get started with our platform and scale as you grow.",
+      "Added logout functionality and improved search experience with default values for better testing and demonstration.",
     content:
-      "Pricing is now usage-based. You can still start for free, and only pay when you are collecting feedback from more tracked users.\n\nLower entry points:\n• Free plan now includes 25 tracked users and many features that were previously paid\n• Paid plans start at $19/month with 100 tracked users and additional features\n\nFewer limits, more features:\n• Autopilot AI is included in all plans\n• Capture feedback in all of your customer communication.",
+      "Major improvements to user authentication and search functionality:\n\n• Added logout feature with conditional display in sidebar\n• Implemented default search value 'temperature data logger' for testing and demo purposes\n• Fixed metadata URLs for better SEO and sharing\n• Minor fixes to search component functionality\n• Updated sidebar, header, footer and search results layout to ensure mobile responsiveness",
     type: "New",
-    labels: ["Pricing", "Features"],
+    labels: ["Authentication", "Search", "UI"],
     badge: "New",
   },
   {
     id: "2",
-    date: "June 10, 2025",
-    title: "Enhanced Dashboard Analytics",
+    date: "July 5, 2025",
+    title: "Metadata and Manifest Improvements",
     description:
-      "New analytics dashboard with real-time metrics and improved data visualization.",
+      "Enhanced website metadata and added progressive web app manifest details for better mobile experience.",
     content:
-      "We've completely redesigned our analytics dashboard to provide better insights into your application performance.\n\nKey improvements:\n• Real-time data updates\n• Interactive charts and graphs\n• Custom date range selection\n• Export functionality for all reports\n• Mobile-optimized interface",
+      "Website optimization and mobile experience improvements:\n\n• Added comprehensive metadata for better search engine optimization\n• Implemented progressive web app manifest details\n• Updated sidebar menu with improved navigation\n• Added search results page with responsive layout\n• Search page adjustments for better user experience\n• Various search component fixes and improvements",
     type: "Improved",
-    labels: ["Dashboard", "Analytics"],
+    labels: ["SEO"],
   },
   {
     id: "3",
-    date: "June 5, 2025",
-    title: "Fixed email notification issues",
+    date: "July 4, 2025",
+    title: "Logo Integration and Responsive Design",
     description:
-      "Resolved issues with email notifications not being delivered consistently.",
+      "Added VertragX logo throughout the platform and implemented responsive sidebar menu for better mobile experience.",
     content:
-      "We've fixed several issues related to email notifications:\n\n• Email delivery reliability improved by 99.9%\n• Fixed duplicate notification bug\n• Improved email template rendering\n• Added retry mechanism for failed deliveries",
-    type: "Fixed",
-    labels: ["Email", "Notifications", "Bug Fix"],
+      "Brand consistency and mobile improvements:\n\n• Added VertragX logo in sidebar and as copyright in footer\n• Implemented responsive sidebar menu with mobile support\n• Created changelog page concept for tracking updates\n• Enhanced overall brand consistency and mobile responsiveness across the platform",
+    type: "Improved",
+    labels: ["Branding", "Design"],
   },
   {
     id: "4",
-    date: "May 28, 2025",
-    title: "Integration with Slack and Discord",
+    date: "July 3, 2025",
+    title: "DevOps and Deployment Setup",
     description:
-      "Connect your workspace with popular communication platforms for seamless workflow integration.",
+      "Configured automated deployment pipeline to Vercel with GitHub integration for continuous deployment.",
     content:
-      "New integrations available:\n\n• Slack integration for team notifications\n• Discord webhook support\n• Real-time status updates\n• Custom notification rules\n• Easy setup with OAuth authentication",
+      "Production deployment and DevOps improvements:\n\n• Setup automated deployment to Vercel triggered by GitHub push\n• Configured environment variables for production\n• Implemented branch-based deployment strategy\n• Setup preview deployments for pull requests•",
     type: "New",
-    labels: ["Integration", "Slack", "Discord"],
+    labels: ["Deployment"],
   },
   {
     id: "5",
-    date: "May 20, 2025",
-    title: "Performance improvements across the platform",
+    date: "July 3, 2025",
+    title: "Analytics and Monitoring Integration",
     description:
-      "Significant speed improvements and reduced loading times throughout the application.",
+      "Integrated OpenPanel for comprehensive analytics tracking and Sentry for application monitoring and error tracking.",
     content:
-      "We've made substantial performance improvements:\n\n• 40% faster page load times\n• Optimized database queries\n• Improved caching mechanisms\n• Reduced memory usage\n• Better mobile performance",
-    type: "Improved",
-    labels: ["Performance", "Optimization"],
+      "Enhanced monitoring and analytics capabilities:\n\n• Integrated OpenPanel for user analytics and behavior tracking\n• Added Sentry for comprehensive application monitoring\n• Implemented error tracking and performance monitoring\n• Setup real-time error alerts and notifications•",
+    type: "New",
+    labels: ["Analytics", "Monitoring"],
+  },
+  {
+    id: "6",
+    date: "July 2, 2025",
+    title: "Redis and Search Infrastructure",
+    description:
+      "Integrated Upstash for Redis caching, product search capabilities, and vector search functionality.",
+    content:
+      "Advanced search and caching infrastructure:\n\n• Integrated Upstash Redis for high-performance caching\n• Planned to implement product search with Redis-based indexing\n• Planned to add vector search capabilities for AI-powered search•",
+    type: "New",
+    labels: ["Search", "Caching", "AI"],
+  },
+  {
+    id: "7",
+    date: "July 2, 2025",
+    title: "Platform Foundation and Authentication Setup",
+    description:
+      "Major platform improvements including monorepo documentation, theme updates, and email authentication implementation.",
+    content:
+      "Foundation improvements and authentication setup:\n\n• Added comprehensive instructions for adding new packages to monorepo\n• Updated theme system and switched to light mode as default\n• Improved email authentication flow with better user experience\n• Added complete email authentication system\n• Initial project setup with all necessary configurations",
+    type: "New",
+    labels: ["Platform", "Authentication", "Documentation"],
+  },
+  {
+    id: "8",
+    date: "July 1, 2025",
+    title: "Project Initialization and Core Setup",
+    description:
+      "Initial project setup with complete monorepo structure, authentication system, and development environment.",
+    content:
+      "Complete project foundation setup:\n\n• Initial commit with full monorepo configuration\n• Turborepo setup with multiple apps (web, app, api)\n• Supabase integration for authentication and database\n• Email authentication flow implementation\n• Theme system with custom design tokens\n• Development environment configuration\n• Build system and tooling setup",
+    type: "New",
+    labels: ["Infrastructure"],
   },
 ];
 

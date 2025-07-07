@@ -9,7 +9,7 @@ interface AppHeaderProps {
   title?: string;
 }
 
-export function AppHeader({ title = "Dashboard" }: AppHeaderProps) {
+export function AppHeader({ title = "VertragX" }: AppHeaderProps) {
   const { toggleSidebar } = useSidebar();
 
   const handleFeedbackClick = () => {

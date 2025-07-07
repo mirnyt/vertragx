@@ -18,18 +18,20 @@ import { Search, Filter, X } from "lucide-react";
 
 const typeOptions = ["All entries", "New", "Improved", "Fixed"];
 const labelOptions = [
-  "Pricing",
-  "Features",
-  "Dashboard",
-  "Analytics",
-  "Email",
-  "Notifications",
-  "Bug Fix",
-  "Integration",
-  "Slack",
-  "Discord",
-  "Performance",
-  "Optimization",
+  "AI",
+  "Analytics", 
+  "Authentication",
+  "Branding",
+  "Caching",
+  "Deployment",
+  "Design",
+  "Documentation",
+  "Infrastructure",
+  "Monitoring",
+  "Platform",
+  "Search",
+  "SEO",
+  "UI",
 ];
 
 interface ChangelogFiltersProps {
