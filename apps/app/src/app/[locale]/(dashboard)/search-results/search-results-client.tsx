@@ -520,12 +520,64 @@ export function SearchResultsClient({ searchQuery }: SearchResultsClientProps) {
                     Chat
                   </Button>
                 </SheetTrigger>
-                <SheetContent side="left" className="w-full sm:w-[400px] p-0">
-                  <SheetHeader className="p-4">
+                <SheetContent side="left" className="w-full sm:w-[400px] p-0 flex flex-col">
+                  <SheetHeader className="p-4 flex-shrink-0">
                     <SheetTitle>Product Assistant</SheetTitle>
                   </SheetHeader>
-                  <div className="h-[calc(100vh-4rem)]">
-                    <ChatInterface />
+                  <div className="flex-1 flex flex-col min-h-0">
+                    <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                      {chatMessages.map((message, index) => (
+                        <div
+                          key={index}
+                          className={`flex ${message.type === "user" ? "justify-end" : "justify-start"}`}
+                        >
+                          <div
+                            className={`max-w-[80%] rounded-lg p-3 ${
+                              message.type === "user"
+                                ? "bg-primary text-primary-foreground"
+                                : "bg-muted text-muted-foreground"
+                            }`}
+                          >
+                            <p className="text-sm">{message.content}</p>
+                            <p className="text-xs opacity-70 mt-1">{message.timestamp}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    {/* Follow-up Suggestions */}
+                    <div className="p-3 border-t border-border flex-shrink-0">
+                      <h3 className="text-sm font-medium text-foreground mb-2">
+                        Ask follow-up...
+                      </h3>
+                      <div className="space-y-1">
+                        {followUpSuggestions.map((suggestion, index) => (
+                          <button
+                            key={index}
+                            className="w-full flex items-center gap-2 p-2 text-left text-sm text-muted-foreground hover:bg-accent hover:text-accent-foreground rounded-lg transition-colors duration-200"
+                          >
+                            <suggestion.icon className="h-4 w-4 flex-shrink-0" />
+                            <span className="truncate">{suggestion.text}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Chat Input */}
+                    <div className="p-4 border-t border-border flex-shrink-0">
+                      <div className="flex gap-2">
+                        <Input
+                          value={chatMessage}
+                          onChange={(e) => setChatMessage(e.target.value)}
+                          placeholder="Ask about products..."
+                          className="flex-1"
+                          onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
+                        />
+                        <Button onClick={handleSendMessage} size="icon">
+                          <Send className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
                   </div>
                 </SheetContent>
               </Sheet>
