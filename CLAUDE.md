@@ -98,7 +98,7 @@ TailwindCSS - Styling
 Shadcn - UI components
 TypeScript - Type safety
 Supabase - Authentication, database, storage
-Upstash - Cache and rate limiting
+Upstash - Cache, rate limiting, and search
 React Email - Email templates
 Resend - Email delivery
 i18n - Internationalization
@@ -116,7 +116,7 @@ VoltAgent - AI agent framework (voltagent.dev)
 - **Frontend:** Next.js 14 App Router, TailwindCSS, Shadcn UI, TypeScript
 - **Backend:** Supabase (PostgreSQL + Auth + Storage + Edge Functions)
 - **State:** next-safe-action for server actions, nuqs for URL state
-- **Services:** Upstash Redis, Resend email, Sentry monitoring, Trigger.dev jobs
+- **Services:** Upstash (Redis + Search), Resend email, Sentry monitoring, Trigger.dev jobs
 - **AI:** VoltAgent framework for AI agents and tools
 - **Tooling:** Biome (linting/formatting), Turborepo, TypeScript
 
@@ -138,6 +138,7 @@ Each app has separate `.env` files. Copy from `.env.example` and configure:
 
 **Additional services:**
 - **Upstash Redis**: `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`
+- **Upstash Search**: `NEXT_PUBLIC_UPSTASH_SEARCH_REST_URL`, `NEXT_PUBLIC_UPSTASH_SEARCH_REST_TOKEN`
 - **Resend Email**: `RESEND_API_KEY`, `RESEND_AUDIENCE_ID`
 - **Sentry**: `NEXT_PUBLIC_SENTRY_DSN`, `SENTRY_AUTH_TOKEN`
 - **OpenPanel**: `OPENPANEL_CLIENT_ID`, `OPENPANEL_CLIENT_SECRET`
@@ -680,6 +681,57 @@ bun dev
 - Run `bun clean` and `bun install`
 - Check for circular dependencies
 - Verify package.json main/types paths
+
+## Search Implementation
+
+The project uses **Upstash Search** for fast, scalable text search functionality.
+
+### Search Architecture
+
+**Search Client**: Located at `apps/app/src/app/[locale]/(dashboard)/search-client.tsx`
+- Real-time search with 300ms debounce
+- Inline dropdown results (no modal)
+- Keyboard navigation support
+- Mobile-responsive design
+
+### Search Configuration
+```typescript
+// Initialize Upstash Search
+const search = new Search({
+  url: process.env.NEXT_PUBLIC_UPSTASH_SEARCH_REST_URL!,
+  token: process.env.NEXT_PUBLIC_UPSTASH_SEARCH_REST_TOKEN!,
+});
+
+const index = search.index("default");
+
+// Perform search
+const response = await index.search({
+  query: "search term",
+  limit: 10,
+  reranking: true  // AI-powered result reranking
+});
+```
+
+### Document Structure
+```typescript
+{
+  id: string,
+  content: {
+    title: string,
+    description: string,
+    category: string,
+    url: string
+  }
+}
+```
+
+### Search Features
+- **Fallback Support**: Mock results if Upstash not configured
+- **Error Handling**: Graceful degradation on failures
+- **Type Safety**: Full TypeScript support
+- **Responsive**: Works on all device sizes
+
+For detailed setup instructions, see `docs/upstash-search-setup.md`.
 
 ## Authentication Implementation
 
