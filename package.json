@@ -25,5 +25,9 @@
     "turbo": "2.1.1",
     "typescript": "^5.5.4"
   },
-  "packageManager": "bun@1.1.26"
+  "packageManager": "bun@1.1.26",
+  "dependencies": {
+    "@upstash/search": "^0.1.4",
+    "@upstash/search-ui": "^0.1.5"
+  }
 }

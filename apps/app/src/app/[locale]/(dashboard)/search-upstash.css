@@ -1,0 +1,169 @@
+/* Upstash Search Bar Custom Styling - VertragX Theme */
+
+/* Override Upstash dialog backdrop */
+[data-radix-dialog-overlay] {
+  background-color: rgba(0, 0, 0, 0.4) !important;
+  backdrop-filter: blur(4px);
+}
+
+/* Override Upstash dialog content */
+[data-radix-dialog-content] {
+  background-color: var(--background) !important;
+  border: 2px solid var(--accent) !important;
+  border-radius: 1rem !important;
+  box-shadow: 0 20px 50px -12px rgba(255, 107, 53, 0.15), 0 0 0 1px rgba(255, 107, 53, 0.05) !important;
+}
+
+/* Override search input styling */
+.upstash-search-input,
+[data-search-input] {
+  background-color: var(--background) !important;
+  border: 2px solid var(--accent) !important;
+  color: var(--foreground) !important;
+  font-weight: 500 !important;
+  transition: all 0.3s ease !important;
+}
+
+.upstash-search-input:focus,
+[data-search-input]:focus {
+  border-color: var(--accent-foreground) !important;
+  outline: none !important;
+  box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.15) !important;
+}
+
+/* Override placeholder text */
+.upstash-search-input::placeholder,
+[data-search-input]::placeholder {
+  color: var(--muted-foreground) !important;
+  opacity: 0.6 !important;
+  font-weight: 600 !important;
+}
+
+/* Override search results container */
+.upstash-search-results,
+[data-search-results] {
+  background-color: var(--background) !important;
+  border-top: 1px solid var(--accent) !important;
+  max-height: 60vh !important;
+  overflow-y: auto !important;
+}
+
+/* Override individual search result items */
+.upstash-search-result,
+[data-search-result] {
+  background-color: transparent !important;
+  border: none !important;
+  transition: all 0.2s ease !important;
+  margin: 0.25rem 0.5rem !important;
+  border-radius: 0.5rem !important;
+  padding: 0.75rem 1rem !important;
+}
+
+.upstash-search-result:hover,
+[data-search-result]:hover,
+.upstash-search-result[data-highlighted],
+[data-search-result][data-highlighted] {
+  background-color: var(--accent) !important;
+  color: var(--accent-foreground) !important;
+}
+
+/* Override no results text */
+.upstash-search-no-results,
+[data-search-no-results] {
+  color: var(--muted-foreground) !important;
+  padding: 2rem !important;
+  text-align: center !important;
+  font-weight: 500 !important;
+}
+
+/* Override loading state */
+.upstash-search-loading,
+[data-search-loading] {
+  color: var(--muted-foreground) !important;
+  padding: 2rem !important;
+  text-align: center !important;
+}
+
+/* Custom scrollbar for search results */
+.upstash-search-results::-webkit-scrollbar,
+[data-search-results]::-webkit-scrollbar {
+  width: 8px;
+}
+
+.upstash-search-results::-webkit-scrollbar-track,
+[data-search-results]::-webkit-scrollbar-track {
+  background: var(--accent);
+  border-radius: 4px;
+}
+
+.upstash-search-results::-webkit-scrollbar-thumb,
+[data-search-results]::-webkit-scrollbar-thumb {
+  background: var(--accent-foreground);
+  border-radius: 4px;
+  opacity: 0.5;
+}
+
+.upstash-search-results::-webkit-scrollbar-thumb:hover,
+[data-search-results]::-webkit-scrollbar-thumb:hover {
+  opacity: 0.8;
+}
+
+/* Mobile responsiveness enhancements */
+@media (max-width: 640px) {
+  [data-radix-dialog-content] {
+    margin: 1rem !important;
+    max-height: calc(100vh - 2rem) !important;
+  }
+  
+  .upstash-search-results,
+  [data-search-results] {
+    max-height: calc(100vh - 10rem) !important;
+  }
+  
+  .upstash-search-result,
+  [data-search-result] {
+    padding: 0.75rem !important;
+  }
+}
+
+/* Tablet responsiveness */
+@media (min-width: 641px) and (max-width: 1024px) {
+  [data-radix-dialog-content] {
+    margin: 2rem !important;
+    max-height: calc(100vh - 4rem) !important;
+  }
+  
+  .upstash-search-results,
+  [data-search-results] {
+    max-height: calc(100vh - 12rem) !important;
+  }
+}
+
+/* Animation for dialog appearance */
+@keyframes searchDialogShow {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+[data-radix-dialog-content] {
+  animation: searchDialogShow 0.2s ease-out !important;
+}
+
+/* Focus visible states for accessibility */
+.upstash-search-result:focus-visible,
+[data-search-result]:focus-visible {
+  outline: 2px solid var(--accent-foreground) !important;
+  outline-offset: 2px !important;
+}
+
+/* Ensure text remains readable in all states */
+.upstash-search-result:hover *,
+[data-search-result]:hover * {
+  color: var(--accent-foreground) !important;
+}
