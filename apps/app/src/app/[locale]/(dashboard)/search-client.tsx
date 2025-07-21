@@ -102,8 +102,6 @@ export function SearchClient() {
         reranking: true
       });
       
-      console.log("Upstash search response:", response); // Debug log
-      
       // Process Upstash Search results
       let results: SearchResult[] = [];
       
@@ -113,6 +111,7 @@ export function SearchClient() {
         results = response.results.map((item: any) => ({
           id: item.id || Math.random().toString(36).substring(2, 11),
           title: item.content?.title || item.title || item.content?.name || item.name || "Untitled",
+          supplier: item.content?.supplier || item.supplier || "",
           description: item.content?.description || item.description || item.content?.content || "",
           category: item.content?.category || item.category || item.content?.type || "",
           url: item.content?.url || item.url || `/search-results?q=${encodeURIComponent(query)}`,
@@ -131,9 +130,6 @@ export function SearchClient() {
           ...item.content
         }));
       }
-      
-      console.log("Processed results:", results); // Debug log
-      
       setSearchResults(results);
       setShowResults(results.length > 0);
     } catch (error) {
@@ -319,7 +315,7 @@ export function SearchClient() {
                             <div className={`text-xs sm:text-sm line-clamp-2 ${
                               index === selectedIndex ? "" : "text-muted-foreground"
                             }`}>
-                              {result.description}
+                              {result.supplier}
                             </div>
                           )}
                           {result.category && (
